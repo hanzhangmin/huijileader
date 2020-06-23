@@ -21,45 +21,47 @@
       <table border="1"
              cellspacing="0"
              cellpadding="0">
-        <tr>
-          <th rowspan="2">资产名称</th>
-          <th rowspan="2">资产类型</th>
-          <th colspan="15">资产台账表</th>
-          <th colspan="7">资产经营表</th>
-        </tr>
-        <tr>
-          <!-- 资产台账表 -->
-          <th>单位</th>
-          <th>数量</th>
-          <th>单价</th>
-          <th>品牌</th>
-          <th>型号</th>
-          <th>状态</th>
-          <th>原值</th>
-          <th>现值</th>
-          <th>变动情况</th>
-          <th>构建时间</th>
-          <th>来源</th>
-          <th>预计使用年限</th>
-          <th>管理部门</th>
-          <th>管理人员</th>
-          <th>备注</th>
-          <!-- 资产经营表 -->
-          <th>状态</th>
-          <th>承租人</th>
-          <th>支付情况</th>
-          <th>有无签订合同</th>
-          <th>合同期限</th>
-          <th>支付合同金额</th>
-          <th>备注</th>
-        </tr>
-        <tr v-for="(data,index) in tableData"
-            :key="index">
-          <td v-for="(value ,index2) in data.values"
-              :key="index2">
-            {{value}}
-          </td>
-        </tr>
+        <tbody>
+          <tr>
+            <th rowspan="2">资产名称</th>
+            <th rowspan="2">资产类型</th>
+            <th colspan="15">资产台账表</th>
+            <th colspan="7">资产经营表</th>
+          </tr>
+          <tr>
+            <!-- 资产台账表 -->
+            <th>单位</th>
+            <th>数量</th>
+            <th>单价</th>
+            <th>品牌</th>
+            <th>型号</th>
+            <th>状态</th>
+            <th>原值</th>
+            <th>现值</th>
+            <th>变动情况</th>
+            <th>构建时间</th>
+            <th>来源</th>
+            <th>预计使用年限</th>
+            <th>管理部门</th>
+            <th>管理人员</th>
+            <th>备注</th>
+            <!-- 资产经营表 -->
+            <th>状态</th>
+            <th>承租人</th>
+            <th>支付情况</th>
+            <th>有无签订合同</th>
+            <th>合同期限</th>
+            <th>支付合同金额</th>
+            <th>备注</th>
+          </tr>
+          <tr v-for="(data,index) in tableData"
+              :key="index">
+            <td v-for="(value ,index2) in data.values"
+                :key="index2">
+              {{value}}
+            </td>
+          </tr>
+        </tbody>
       </table>
     </div>
     <div class="pagebox">

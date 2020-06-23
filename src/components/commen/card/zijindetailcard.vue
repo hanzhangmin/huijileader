@@ -41,7 +41,7 @@ export default {
   name: "zjdcard",
   props: {
     shouzhi: Array,
-    jieyu: Number,
+    jieyu: String,
     zjname: String
   },
   methods: {

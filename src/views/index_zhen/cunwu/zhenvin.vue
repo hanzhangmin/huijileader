@@ -71,9 +71,11 @@ function get_qianyi_by_vid_handle (vm, vid) {
           let photos = data.hkqyZhengming.split(",")
           photos.length--;
           imgs = photos.map(p => {
-            return `${this.$store.state.vqypurl}${p}`
+            console.log();
+            return `${vm.$store.state.vqypurl}${p}`
           });
         }
+        console.log(imgs);
         return {
           id: data.hkqyId,
           values: [

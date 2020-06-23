@@ -13,7 +13,6 @@ Vue.use(Viewer, {
         zIndex: 9999
     }
 })
-
 Vue.use(mytoast)
 Vue.prototype.$echarts = echarts
 Vue.config.productionTip = false

@@ -274,7 +274,7 @@ const routes = [{
                     //       redirect: "zhenzijin/:vid"
                     //   },
                     {
-                        path: "zhenzijin/:vid",
+                        path: "zhenzijincun/:vid",
                         component: zhenzijin1
                     },
                     {

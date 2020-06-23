@@ -1,8 +1,8 @@
 <template>
   <div class="loginbody">
     <h1>
-      <img src="~assets/imgs/title.png" />
-      <!-- 郑州市惠济区村（居）务监督平台 -->
+      <!-- <img src="~assets/imgs/title.png" /> -->
+      郑州市惠济区村（居）务监督平台
     </h1>
     <div class="login_card">
       <div class="login_form">
@@ -68,18 +68,20 @@ export default {
           // this.$store.commit("changestatus", sessionStorage.getItem("status"))
           // this.$router.push("/indexqu")
           if (res.state === "success") {
-            if (res.data.mType === 1) {
+            if (res.data.mType === 1 || res.data.mType === "1") {
               sessionStorage.setItem("status", 1)
               this.$store.commit("changestatus", sessionStorage.getItem("status"))
               setCookie(this.input1.value, this.input2.value, 1)
               this.$router.push("/indexqu");
-            } else {
+            } else if (res.data.mType === 6 || res.data.mType === "6") {
               setCookie(this.input1.value, this.input2.value, 0)
               sessionStorage.setItem("status", "")
               this.$store.commit("changestatus", sessionStorage.getItem("status"))
               this.$router.push({
                 path: `/indexzhen/${res.data.zhenId}`,
               })
+            } else {
+              this.$mytoast.toast("无该领导账号信息，您可以联系相关人员添加", 2000)
             }
           } else {
             this.$mytoast.toast("填写错误！", 2000)
@@ -95,9 +97,17 @@ export default {
   width: 100%;
   height: 100%;
   background: url("~assets/imgs/loginback.jpg") no-repeat center;
+  // background: url("~assets/imgs/indexqu.jpg") no-repeat center;
+  // background: url("~assets/imgs/background.jpg") no-repeat center;
+  // background-color: @mainColor;
   background-size: cover;
   h1 {
     text-align: center;
+    padding: 1rem;
+    font-size: 3rem;
+    // text-shadow: 1px 1px 2px @mainColor;
+    text-shadow: 1px 1px 2px white, -1px -1px 2px black;
+    color: @mainColor;
   }
   each(@fitmobile, {
     @media screen and (min-width: @value) {
@@ -105,7 +115,7 @@ export default {
         width: 80vw;
         height: 120vw;
         border-radius: 10vw;
-        box-shadow: 10px -10px 1px 1rem @mainColor;
+        box-shadow: 10px -10px 1px 1rem @mainColor,-1px -1px 1px 2px black;
      }
      img{
       width:100%;
@@ -134,6 +144,7 @@ export default {
         height: 32vw;
         border-radius: 16vw;
         box-shadow: 1rem -1rem 1px 1.1rem @mainColor;
+        transform: translate(-60%, -50%);
      }
        img{
       width:40%;

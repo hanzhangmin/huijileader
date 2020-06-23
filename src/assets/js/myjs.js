@@ -21,11 +21,12 @@ export function gettime(year, mouth) {
             theday += 30
         }
     }
+    console.log(theday);
     return theday
 }
 export function isnull(str) {
     if (str === null || str === "null" || str === undefined || str === "undefined" || str === "") {
-        return "未知"
+        return "--"
     } else {
         return str
     }

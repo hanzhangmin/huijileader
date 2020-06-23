@@ -123,7 +123,7 @@ function getzijin (vm, res) {
     let seriesItem = { seriesNames: ["收入", "支出"], seriesValue: [] };
     let sr = [],
       zc = [],
-      theyear = parseInt(timelineData[i].substr(0, 4));
+      theyear = Number(timelineData[i].substr(0, 4));
     for (let m = 0, len = res.data.length; m < len; m++) {
       let sritem = 0,
         zcitem = 0,
@@ -134,15 +134,15 @@ function getzijin (vm, res) {
       for (let n1 = 0, nmax1 = res.data[m].bankCapital.length; n1 < nmax1; n1++) {
         let itemyear = Number(res.data[m].bankCapital[n1].cdIncome);
         if (itemyear == theyear) {
-          yhsritem += (Number(res.data[m].bankCapital[n1].cdBeiyong1).toFixed(0)) / 10000;
-          yhzcitem += (Number(res.data[m].bankCapital[n1].cdBeiyong2).toFixed(0)) / 10000;
+          yhsritem += ((Number(res.data[m].bankCapital[n1].cdBeiyong1).toFixed(0)) / 10000);
+          yhzcitem += ((Number(res.data[m].bankCapital[n1].cdBeiyong2).toFixed(0)) / 10000);
         }
       }
       for (let n2 = 0, nmax2 = res.data[m].cashCapital.length; n2 < nmax2; n2++) {
         let itemyear = Number(res.data[m].cashCapital[n2].cdIncome);
         if (itemyear == theyear) {
-          xjsritem += (Number(res.data[m].cashCapital[n2].cdBeiyong1).toFixed(0)) / 10000;
-          xjzcitem += (Number(res.data[m].cashCapital[n2].cdBeiyong2).toFixed(0)) / 10000;
+          xjsritem += ((Number(res.data[m].cashCapital[n2].cdBeiyong1).toFixed(0)) / 10000);
+          xjzcitem += ((Number(res.data[m].cashCapital[n2].cdBeiyong2).toFixed(0)) / 10000);
         }
       }
       sritem = xjsritem + yhsritem;
@@ -174,9 +174,9 @@ function getzijinbyyear (vm, theyear, res) {
       zc = [],
       themouth;
     if (timelineData[i].length == 3) {
-      themouth = parseInt(timelineData[i].substr(0, 2));
+      themouth = Number(timelineData[i].substr(0, 2));
     } else {
-      themouth = parseInt(timelineData[i][0]);
+      themouth = Number(timelineData[i][0]);
     }
     for (let m = 0, len = res.data.length; m < len; m++) {
       let sritem = 0,

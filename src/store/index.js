@@ -60,7 +60,7 @@ const store = new Vuex.Store({
         // 村会议照片路径
         vhuodongpurl: "http://47.105.118.98/jdpt/HJResourse/Cunhuodong/",
         // 村活动照片路径
-        vqypurl: "http://47.105.118.98/jdpt/HJResourse/Cunhuodong/",
+        vqypurl: "http://47.105.118.98/jdpt/HJResourse/HuKouqianyi/",
         // 迁移照片路径
         // 组织活动照片路径
         zzhdpurl: "http://47.105.118.98/jdpt/HJResourse/Zuzhihuodong/",

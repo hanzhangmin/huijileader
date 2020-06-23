@@ -3,7 +3,6 @@
     <div class="searchbody">
       <div class="search-l iconfont icon-jiantou"
            @click.stop="goindex">
-
       </div>
       <div class="search-m">
         {{zhenname}}
@@ -54,11 +53,11 @@ export default {
       return kks
     }
   },
-  watch: {
-    thezhen (val) {
-      this.$emit("transferzhen", this.thezhen)
-    }
-  },
+  // watch: {
+  //   thezhen (val) {
+  //     this.$emit("transferzhen", this.thezhen)
+  //   }
+  // },
   created () {
     this.thezhen = Number(this.$route.params.zhen_id)
     for (let index = 0, len = this.$store.state.zhensx.length; index < len; index++) {
@@ -84,6 +83,8 @@ export default {
     changzhen (id, name) {
       this.thezhen = id
       this.zhenname = name
+      console.log(this.thezhen);
+      this.$emit("transferzhen", id)
     },
     goindex () {
       this.$router.push("/indexqu")

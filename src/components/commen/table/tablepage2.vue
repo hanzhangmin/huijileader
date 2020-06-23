@@ -1,6 +1,5 @@
 <template>
   <div class="tablepage">
-
     <div class="tb-header">
       <div class="tb-left">
         <slot name="tabletitle"></slot>
@@ -22,27 +21,33 @@
       <table border="1"
              cellspacing="0"
              cellpadding="0">
-        <tr>
-          <th v-for="(head,index) in thead"
-              :key="index">{{head}}</th>
-        </tr>
-        <tr v-for="(data,index) in tableData"
-            :key="index">
-          <td v-for="(value ,index2) in data.values"
-              :key="index2">
-            {{value}}
-          </td>
-          <td>
-            <span v-if="data.imgs.length==0">无</span>
-            <viewer v-else
-                    :images="data.imgs">
-              <img class="tableimg"
-                   :src="src"
-                   :key="src" />
-            </viewer>
-          </td>
-        </tr>
+        <tbody>
+          <tr>
+            <th v-for="(head,index) in thead"
+                :key="index">{{head}}</th>
+          </tr>
+          <tr v-for="(data,index) in tableData"
+              :key="index">
+            <td v-for="(value ,index2) in data.values"
+                :key="index2">
+              {{value}}
+            </td>
+            <td>
+              <span v-if="data.imgs.length==0">无</span>
+              <viewer v-else
+                      :images="data.imgs">
+                <span v-for="(src,index3) in data.imgs"
+                      :key="index3">
+                  <img class="tableimg"
+                       :src="src"
+                       :key="src" />
+                </span>
+              </viewer>
+            </td>
+          </tr>
+        </tbody>
       </table>
+
     </div>
     <div class="pagebox">
       <div class="loader">

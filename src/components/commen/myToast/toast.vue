@@ -10,7 +10,7 @@ export default {
   data () {
     return {
       message: "",
-      show: Boolean
+      show: false
     }
   },
 }

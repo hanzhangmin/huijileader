@@ -2,9 +2,9 @@ import Vue from 'vue'
 import toastComponent from "./toast.vue"
 const toastConstructor = Vue.extend(toastComponent)
 const instance = new toastConstructor({
-    el: document.createElement('div')
-})
-instance.show = false // 默认隐藏
+        el: document.createElement('div')
+    })
+    // instance.show = false // 默认隐藏
 const mytoast = {
     toast(message, timeout) { // 显示方法
         instance.message = message;

@@ -50,7 +50,7 @@ export default {
       tableData: [
       ],
       theyear: Number,
-      jieyu: 0,
+      jieyu: "",
       shouzhi: [],
       reloadd: "",
       zjname: "",
@@ -94,11 +94,11 @@ export default {
         .then(res => {
           console.log(res);
           try {
-            this.jieyu = parseInt(res.monthincome).toFixed(2)
+            this.jieyu = res.monthincome
             this.shouzhi = res.record.map(item => {
               return {
                 time: item.zijinxiangqing.cdTime,
-                money: parseInt(item.meicishouzhi).toFixed(2),
+                money: parseFloat(item.meicishouzhi).toFixed(2),
                 reason: item.zijinxiangqing.cdXiangqing
               }
             })
@@ -106,12 +106,18 @@ export default {
             this.zjcardshow = true
           } catch (error) {
             // alert(1)
-            // this.zjname = "无信息"
-            // this.jieyu = "未知"
-            // this.zjcardshow = true
-            // this.jieyu = zjname
-            this.$mytoast.toast("无信息", 100000)
+            this.zjname = "无信息"
+            this.zjcardshow = true
+            this.jieyu = this.zjname
+            console.log(error);
+            this.$mytoast.toast("请求失败，稍候再试！", 10000)
           }
+        }, err => {
+          console.log(err);
+          this.zjname = "无信息"
+          this.zjcardshow = true
+          this.jieyu = this.zjname
+          this.$mytoast.toast("请求失败，稍候再试！", 10000)
         })
     }
   },

@@ -11,12 +11,16 @@ export default {
   name: "tabitem1",
   props: {
     path: String,
+    path1: {
+      type: String,
+      default: "huiji"
+    }
   },
   computed: {
     isActive () {
       // console.log(this.$route.path)
       // return this.$route.path === this.path 可行，但是下面有更加稳妥的方法
-      return !this.$route.path.indexOf(this.path)
+      return (this.$route.path.indexOf(this.path) !== -1 || this.$route.path.indexOf(this.path1) !== -1)
       // indexOf(item ,num) item 要找的字符串 num 检索开始位置下标 存在则返回第一次存在的下标，不存在返回 -1 
     },
     activeClass () {

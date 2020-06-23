@@ -8,7 +8,7 @@ export function requeste(config) {
     instance1.interceptors.response.use((res) => {
         return res.data
     }, err => {
-        return err
+        return Promise.reject(err)
     })
     return instance1(config)
 }
@@ -20,7 +20,7 @@ export function request_login(config) {
     instance1.interceptors.response.use((res) => {
         return res.data
     }, err => {
-        return err
+        return Promise.reject(err)
     })
     return instance1(config)
 }
@@ -32,7 +32,7 @@ export function requestf(config) {
     instance1.interceptors.response.use((res) => {
         return res.data
     }, err => {
-        return err
+        return Promise.reject(err)
     })
     return instance1(config)
 }

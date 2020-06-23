@@ -12,9 +12,10 @@
       <card v-for="item in items"
             :key="item.id">
         <h2 slot="title">
-          <router-link :to="'/indexzhen/'+item.id">{{item.name}}</router-link>
+          <a @click.stop="gofklistz(2,item.id,item.name)">{{item.name}}</a>
+          <!-- <router-link :to="'/indexzhen/'+item.id">{{item.name}}</router-link> -->
         </h2>
-        <!-- <p slot="main">
+        <!-- <p slot="smain">
           <span class="yes">已处理：{{item.ycl}}条</span>/
           <span class="no">未处理：{{item.wcl}}条</span>
         </p> -->
@@ -30,7 +31,8 @@
       <card v-for="item in items2"
             :key="item.id">
         <h2 slot="title">
-          <router-link :to="'/indexzhen/'+item.id">{{item.name}}</router-link>
+          <a @click.stop="gofklistz(2,item.id,item.name)">{{item.name}}</a>
+          <!-- <router-link :to="'/indexzhen/'+item.id">{{item.name}}</router-link> -->
         </h2>
         <p slot="main">
           <button @click.stop="gofklistz(1,item.id,item.name)"
@@ -70,7 +72,7 @@ export default {
   created () {
     post_fksum(0, this.$store.getters.theday)
       .then(res => {
-        // console.log(res);
+        console.log(res);
         // for (var j = 0, len1 = this.$store.state.zhensx.length; j < len1; j++) {
         for (let j = 0, len1 = 4; j < len1; j++) {
           for (let i = 0, len = res.data.length; i < len; i++) {

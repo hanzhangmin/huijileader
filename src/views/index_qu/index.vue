@@ -3,15 +3,62 @@
     <div class="container">
       <div class="ib_left">
         <div class="ib_left_bk">
+
           <div class="huijiicon">
             <div class="header">
               <img src="~assets/imgs/zhengzhou.png" />
+
             </div>
+            <!-- <div class="biaoti">
+              <span> 惠济区村(居)务监督平台</span>
+            </div> -->
           </div>
         </div>
-        <div class="lianjie">
-          <naveasy></naveasy>
-        </div>
+        <!-- <div class="lianjie"> -->
+        <!-- <naveasy></naveasy> -->
+        <navfold :theid="'qqfkindex'"
+                 :num="0"
+                 :path="'/indexqu/qqfkindex'">
+          <span slot="nav_header_l"
+                class="iconfont icon-fankuixinxi"></span>
+          <span slot="nav_header_m">群众意见建议</span>
+          <!-- <span slot="nav_header_r"
+                class="iconfont icon-jiantou2"></span> -->
+        </navfold>
+        <navfold :theid="'qqdwindex'"
+                 :num="0"
+                 :path="'/indexqu/qqdwindex'">
+          <span slot="nav_header_l"
+                class="iconfont icon-minzhengxinxi-kunnandangyuan"></span>
+          <span slot="nav_header_m">党务</span>
+          <!-- <span slot="nav_header_r"
+                class="iconfont icon-jiantou2"></span> -->
+        </navfold>
+        <navfold :theid="'/indexqu/qqzjindex'"
+                 :num="0"
+                 :path="'/indexqu/qqzjindex'">
+          <span slot="nav_header_l"
+                class="iconfont icon-tongji4"></span>
+          <span slot="nav_header_m">资金统计表</span>
+          <!-- <span slot="nav_header_r"
+                class="iconfont icon-jiantou2"></span> -->
+        </navfold>
+        <navfold :theid="'zhenjiedao'"
+                 :num="8">
+          <span slot="nav_header_l"
+                class="iconfont icon-cunqingjianjie"></span>
+          <span slot="nav_header_m">镇街道</span>
+          <span slot="nav_header_r"
+                class="iconfont icon-jiantou2"></span>
+          <div slot="nav_box">
+            <tabitem1 v-for="(zhen ,index) in $store.state.zhensx"
+                      :key="index"
+                      :path="'/indexzhen/'+zhen.zhenid">
+              <span slot="liintro">{{zhen.zhenName}}</span>
+            </tabitem1>
+          </div>
+        </navfold>
+        <!-- </div> -->
       </div>
       <div class="ib_right">
         <Header>
@@ -41,12 +88,16 @@ import updatazh from "components/content/accountupdate"
 import Header from "components/commen/Header/Header"
 import ulandlis from "components/commen/ulnavigations/ulandlis"
 import naveasy from "components/content/nav/naveasy"
+import navfold from "components/content/nav/navfold"
+import tabitem1 from "components/commen/tabbar/tabitem1"
 export default {
   name: "indexqu",
   components: {
     Header,
     updatazh,
     naveasy,
+    navfold,
+    tabitem1
   },
   data () {
     return {
@@ -89,25 +140,22 @@ export default {
     .ib_left {
       z-index: 100;
       width: @maxWidth;
+      min-width:  @maxWidth;
       color: white;
       overflow: hidden;
       background-color: @mainColor;
-      a{
-        display: block;
-      }
-      a:link {
-        color:white;
-      }
-      a:visited {
-        background-color: rgba(0, 0, 0, 0.2);
-      }
-      a:hover, a:active{
-        background-color: rgba(0, 0, 0, 0.2);
-      }
+      overflow-y: auto;
        .ib_left_bk {
       width: 100%;
       height: 200px;
       background-color: @mainColor;
+      .biaoti{
+        // position: absolute;
+        font-size: 2rem;
+color: #ffffff;
+     text-align: center;
+        
+      }
       .huijiicon{
         width:100%;
         margin: 1rem 0px;

@@ -1,28 +1,31 @@
 <template>
-  <div class="nav_body">
+  <div>
     <input type="radio"
            name="active"
            :id="theid"
            :value="theid"
            v-model="param">
-    <label :for="theid"
-           @click.stop="unfold($event)"
-           class="nav_header">
-      <div class="nav_header_l">
-        <slot name="nav_header_l"></slot>
+    <div class="nav_body">
+      <label :for="theid"
+             @click.stop="unfold($event)"
+             class="nav_header">
+        <div class="nav_header_l">
+          <slot name="nav_header_l"></slot>
+        </div>
+        <div class="nav_header_m">
+          <slot name="nav_header_m"></slot>
+        </div>
+        <div class="nav_header_r">
+          <slot name="nav_header_r"></slot>
+        </div>
+      </label>
+      <div class="nav_box">
+        <slot name="nav_box">
+        </slot>
       </div>
-      <div class="nav_header_m">
-        <slot name="nav_header_m"></slot>
-      </div>
-      <div class="nav_header_r">
-        <slot name="nav_header_r"></slot>
-      </div>
-    </label>
-    <div class="nav_box">
-      <slot name="nav_box">
-      </slot>
     </div>
   </div>
+
 </template>
 <script>
 export default {
@@ -46,19 +49,21 @@ export default {
       } catch (e) {
         console.log(e);
       }
-      if (this.num === 0) {
+      let el = document.getElementById(theid)
+      if (el.checked) {
+        el.checked = false
       } else {
-        let thedom = event.currentTarget.parentNode
-        // let cdom = event.currentTarget
-        let height = this.num * 3 + 7 + "rem"
-        if (thedom.style.height === height) {
-          thedom.style.height = "4rem"
-          // cdom.style.color = "#cccccc"
-        } else {
-          thedom.style.height = height
-          // cdom.style.color = "#ffffff"
-        }
+        el.checked = true
       }
+
+      // if (this.num === 0) {
+      // } else {
+      //   let thedom = event.currentTarget.parentNode
+      //   let cdom = event.currentTarget
+      //   let height = this.num * 3 + 4 + "rem"
+      //   thedom.style.height = height
+      //   cdom.style.color = "#cccccc"
+      // }
       // this.$refs.thefold.style.height = this.num * 3 + "rem"
     },
     gotheroute () {
@@ -79,24 +84,40 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+input {
+  // appearance: none;
+  width: 0px;
+  height: 0px;
+  background-color: #ffffff;
+  overflow: hidden;
+}
+input:checked + .nav_body {
+  color: #ffffff;
+  max-height: 1000px;
+}
+input:checked + .nav_body .nav_header_r {
+  animation: rotate 0.3s ease-in;
+  transform: rotateZ(90deg);
+}
+@keyframes rotate {
+  0% {
+    transform: rotateZ(0deg);
+  }
+  100% {
+    transform: rotateZ(90deg);
+  }
+}
 .nav_body {
-  height: 4rem;
+  max-height: 4rem;
   color: rgba(0, 0, 0, 0.4);
-  transition: height 0.3s ease-out, color 0.3s ease-out;
-  -webkit-transition: height 0.3s ease-out, color 0.3s ease-out;
-  -moz-transition: height 0.3s ease-out, color 0.3s ease-out;
+  transition: max-height 0.5s linear, color 0.3s ease-out, height 0.5s ease-out;
+  -webkit-transition: max-height 0.5s linear, color 0.3s ease-out,
+    height 0.5s ease-out;
+  -moz-transition: max-height 0.5s linear, color 0.3s ease-out,
+    height 0.5s ease-out;
+  // animation: changeheight 0.3s ease-out;
   overflow: hidden;
   &:hover {
-    color: #ffffff;
-  }
-  input {
-    // appearance: none;
-    width: 0px;
-    height: 0px;
-    background-color: #ffffff;
-    overflow: hidden;
-  }
-  input:checked + label {
     color: #ffffff;
   }
   .nav_header {
@@ -117,6 +138,8 @@ export default {
     .nav_header_r {
       width: 4rem;
       text-align: center;
+      animation: rotate1 0.3s ease-in;
+      transform: rotateZ(0deg);
     }
     .nav_header_m {
       flex: auto;
@@ -124,12 +147,23 @@ export default {
   }
   .nav_box {
     background-color: #ffffff;
-    margin: 0px 2rem;
-    padding: 0.5rem 0px;
+    // margin: 10px 2rem;
+    // padding: 0.5rem 0px;
     border-radius: 1rem;
+    div {
+      padding: 0.5rem 0px;
+    }
   }
 }
 .activeclass {
   color: #ffffff;
+}
+@keyframes rotate1 {
+  0% {
+    transform: rotateZ(90deg);
+  }
+  100% {
+    transform: rotateZ(0deg);
+  }
 }
 </style>

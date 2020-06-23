@@ -22,17 +22,19 @@
       <table border="1"
              cellspacing="0"
              cellpadding="0">
-        <tr>
-          <th v-for="(head,index) in thead"
-              :key="index">{{head}}</th>
-        </tr>
-        <tr v-for="(data,index) in tableData"
-            :key="index">
-          <td v-for="(value ,index2) in data.values"
-              :key="index2">
-            {{value}}
-          </td>
-        </tr>
+        <tbody>
+          <tr>
+            <th v-for="(head,index) in thead"
+                :key="index">{{head}}</th>
+          </tr>
+          <tr v-for="(data,index) in tableData"
+              :key="index">
+            <td v-for="(value ,index2) in data.values"
+                :key="index2">
+              {{value}}
+            </td>
+          </tr>
+        </tbody>
       </table>
     </div>
     <div class="pagebox">

@@ -34,7 +34,12 @@ table {
   margin-top: 1rem;
   font-size: 1.4rem;
   border-collapse: collapse;
-  overflow-x: scroll;
+  // overflow-x: scroll;
+
+  tbody {
+    width: 80vw;
+    overflow-x: auto;
+  }
 
   td,
   th {
@@ -100,4 +105,8 @@ table {
     // background-color: @mainColor;
     color: #000000;
   }
+}
+
+.tp-table {
+  widows: 80vw;
 }
