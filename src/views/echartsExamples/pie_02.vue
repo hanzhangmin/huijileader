@@ -1,5 +1,5 @@
 <template>
-  <div class="charts"
+  <div class="mycharts"
        ref="pie02">
   </div>
 </template>
@@ -20,6 +20,7 @@ export default {
       // 绘制图表
       let vm = this;
       myChart.setOption({
+        // backgroundColor: '#efefef',
         title: {
           text: vm.pie02data.name,
           top: "3%",
@@ -47,7 +48,8 @@ export default {
           {
             name: vm.pie02data.name2,
             type: 'pie',
-            radius: ['50%', '60%'],
+
+            radius: ['40%', '48%'],
             label: {
               show: false
             },
@@ -66,7 +68,7 @@ export default {
             }
           },
         ],
-        color: ["#c6f8e7", "#32b588"]
+        color: ["#224abe", "orange"]
       });
       myChart.hideLoading();
       myChart.on('click', function (param) {

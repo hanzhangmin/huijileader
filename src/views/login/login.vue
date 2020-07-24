@@ -1,197 +1,152 @@
 <template>
-  <div class="loginbody">
-    <h1>
-      <!-- <img src="~assets/imgs/title.png" /> -->
-      郑州市惠济区村（居）务监督平台
-    </h1>
-    <div class="login_card">
-      <div class="login_form">
-      </div>
-      <div class="login_form">
-        <loginInput :inputtype="input1"
-                    @changevalue="changevalue" />
-      </div>
-      <div class="login_form">
-        <loginInput :inputtype="input2"
-                    @changevalue="changevalue" />
-      </div>
-      <div class="login_form">
-        <div class="logbutton">
-          <button @click="login">登录</button>
-        </div>
-      </div>
+  <div>
+    <div class="loginbox">
+      <el-row>
+        <el-col :span="12"
+                :offset="8">
+          <div class="loginform">
+            <h1>郑州市惠济区村务监督平台</h1>
+            <el-form :model="form">
+              <el-form-item>
+                <el-input v-model="form.usernum"
+                          placeholder="请输入账号"
+                          clearable
+                          prefix-icon="el-icon-user"
+                          type="text"></el-input>
+              </el-form-item>
+              <el-form-item>
+                <el-input v-model="form.pas"
+                          clearable
+                          placeholder="请输入密码"
+                          prefix-icon="el-icon-key"
+                          type="password"></el-input>
+              </el-form-item>
+              <el-form-item>
+                <el-switch v-model="form.remember"></el-switch>
+                <span>记住我</span>
+              </el-form-item>
+              <br>
+              <el-form-item>
+                <el-button type="primary"
+                           class="loginbutton"
+                           @click="onSubmit">登录</el-button>
+              </el-form-item>
+            </el-form>
+          </div>
+        </el-col>
+      </el-row>
     </div>
+    <el-row>
+      <el-col :span="12">
+        <div class="login login-left">
+        </div>
+      </el-col>
+      <el-col :span="12">
+        <div class="login login-right">
+        </div>
+      </el-col>
+    </el-row>
   </div>
 </template>
-<script>
-import { post_login } from "network/request"
-import {
-  setCookie,
-  getCookie,
-  clearAllCookie
-} from "assets/js/cookie"
 
-import loginInput from "components/commen/loginInput/input"
+<script>
+import {
+  post_user_login,
+  get_user_info
+} from "network/request"
 export default {
   name: "login",
-  components: {
-    loginInput
-  },
+
   data () {
     return {
-      input1: {
-        title: "nametitle",
-        id: "name",
-        type: "text",
-        placeholder: "请输入账号",
-        value: ""
-      },
-      input2: {
-        title: "pastitle",
-        id: "pas",
-        type: "password",
-        placeholder: "请输入密码",
-        value: ""
-      },
-      // type: "1"
+      form: {
+        usernum: "",
+        pas: "",
+        remember: false,
+      }
+    }
+  },
+  created () {
+    if (localStorage.token) {
+      this.$router.replace("/home")
     }
   },
   methods: {
-    changevalue (str1, str2) {
-      str1 === this.input1.id ? this.input1.value = str2 : this.input2.value = str2
-    },
-    login () {
-      post_login(this.input1.value, this.input2.value, this.type)
+    onSubmit () {
+      post_user_login(this.form.usernum, this.form.pas)
         .then(res => {
-          // console.log(res);
-          // sessionStorage.setItem("status", 1)
-          // this.$store.commit("changestatus", sessionStorage.getItem("status"))
-          // this.$router.push("/indexqu")
-          if (res.state === "success") {
-            if (res.data.mType === 1 || res.data.mType === "1") {
-              sessionStorage.setItem("status", 1)
-              this.$store.commit("changestatus", sessionStorage.getItem("status"))
-              setCookie(this.input1.value, this.input2.value, 1)
-              this.$router.push("/indexqu");
-            } else if (res.data.mType === 6 || res.data.mType === "6") {
-              setCookie(this.input1.value, this.input2.value, 0)
-              sessionStorage.setItem("status", "")
-              this.$store.commit("changestatus", sessionStorage.getItem("status"))
-              this.$router.push({
-                path: `/indexzhen/${res.data.zhenId}`,
-              })
-            } else {
-              this.$mytoast.toast("无该领导账号信息，您可以联系相关人员添加", 2000)
-            }
-          } else {
-            this.$mytoast.toast("填写错误！", 2000)
-          }
+          this.$store.commit("set_token", res.access_token)
+          this.$message({
+            message: res.message,
+            type: 'success'
+          });
+          return get_user_info()
+        }, err => {
+          this.$message({
+            showClose: true,
+            message: err.data.message,
+            type: 'error'
+          });
+        })
+        .then(res => {
+          console.log(res);
+          this.$store.commit("set_level", res.level)
+          this.$store.commit("set_id", res.id)
+          this.$store.commit("set_name", res.name)
+          this.$store.commit("set_townid", res.town.id)
+          this.$store.commit("set_townname", res.town.name)
+          this.$store.commit("set_areaid", res.area.id)
+          this.$store.commit("set_areaname", res.area.name)
+          this.$store.commit("set_villagename", res.village.name)
+          this.$store.commit("set_villageid", res.village.id)
+          this.$router.replace("/home")
         })
     }
-  },
+  }
 }
 </script>
+
 <style lang="less" scoped>
-.loginbody {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: url("~assets/imgs/loginback.jpg") no-repeat center;
-  // background: url("~assets/imgs/indexqu.jpg") no-repeat center;
-  // background: url("~assets/imgs/background.jpg") no-repeat center;
-  // background-color: @mainColor;
+.login {
+  height: 100vh;
+}
+.login-left {
+  background-image: url("~assets/imgs/lotus3.jpg");
+  background-repeat: no-repeat;
   background-size: cover;
+  background-position: center;
+}
+.login-right {
+  background-color: @mainColorfade1;
+}
+.loginbox {
+  .center();
   h1 {
-    text-align: center;
-    padding: 1rem;
-    font-size: 3rem;
-    // text-shadow: 1px 1px 2px @mainColor;
-    text-shadow: 1px 1px 2px white, -1px -1px 2px black;
-    color: @mainColor;
+    .textcenter();
   }
-  each(@fitmobile, {
-    @media screen and (min-width: @value) {
-     .login_card{
-        width: 80vw;
-        height: 120vw;
-        border-radius: 10vw;
-        box-shadow: 10px -10px 1px 1rem @mainColor,-1px -1px 1px 2px black;
-     }
-     img{
-      width:100%;
-     }
-    }
+  z-index: @index10;
+  .loginform {
+    // width: 100%;
+    max-width: 900px;
+    width: 33vw;
+    height: 500px;
+    background-color: #fff;
+    padding: 15px;
+    padding-top: 30px;
   }
-)
-    each(@fitipad, {
-    @media screen and (min-width: @value) {
-      .login_card{
-          width: 60vw;
-          height: 60vw;
-          border-radius: 30vw;
-          box-shadow: 10px -10px 1px 1rem @mainColor;
-     }
-      img{
-      width:70%;
-     }
-    }
+}
+.el-form {
+  max-width: 420px;
+  margin: 30px auto;
+  padding: 0px 2rem;
+  .el-button {
+    width: 100%;
+    height: 40px;
+    background-color: @mainColor;
+    color: #fff;
   }
-)
-    each(@fitpc, {
-    @media screen and (min-width: @value) {
-     .login_card{
-        width: 32vw;
-        height: 32vw;
-        border-radius: 16vw;
-        box-shadow: 1rem -1rem 1px 1.1rem @mainColor;
-        transform: translate(-60%, -50%);
-     }
-       img{
-      width:40%;
-     }
-    }
-  }
-)
-    .login_card {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-  .login_form {
-    width: 70%;
-    height: 4rem;
-    line-height: 4rem;
-    position: relative;
-    margin-bottom: 2rem;
-    .logbutton {
-      width: 100%;
-      text-align: center;
-      button {
-        padding: 0.5rem 1rem;
-        font-size: 1.5rem;
-        height: auto;
-        border: 5px solid #cccccc;
-        color: #cccccc;
-      }
-      button:hover {
-        border: 5px solid @mainColor;
-        color: #32b588;
-      }
-    }
-    select {
-      width: 100%;
-      border-bottom: 2px solid #cccccc;
-      &:focus {
-        border-bottom: 2px solid @mainColor;
-        letter-spacing: 0.2rem;
-      }
-    }
-  }
+}
+.el-input {
+  margin: 1rem 0px;
 }
 </style>

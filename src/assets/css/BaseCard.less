@@ -1,0 +1,48 @@
+.card {
+  margin: 0px 12px 24px 0px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 1px solid #e3e6f0;
+  border-radius: 0.35rem;
+  // animation: name duration timing-function delay iteration-count direction fill-mode;
+  animation: show 0.3s linear;
+  animation-fill-mode: forwards;
+  .boxshadow();
+
+  .card-body {
+    flex: 1 1 auto;
+    padding: 1.25rem;
+    // max-height: 80vh;
+    // overflow-y: auto;
+  }
+
+  .card-header {
+    padding: 8px;
+    border-bottom: 1px solid #e3e6f0;
+    background-color: @gray4;
+    font-size: @fontsize16;
+  }
+
+  .card-footer {
+    border-top: 1px solid #e3e6f0;
+    padding: 8px;
+    text-align: right;
+  }
+}
+
+@keyframes show {
+  0% {
+    // opacity: 0;
+    transform: scaleX(0.1);
+  }
+
+  100% {
+    // opacity: 1;;
+    transform: scaleX(1);
+  }
+}

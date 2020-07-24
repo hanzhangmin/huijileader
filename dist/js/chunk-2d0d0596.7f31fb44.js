@@ -1,0 +1,1 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d0d0596"],{6831:function(e,n,l){"use strict";l.r(n);var t=function(){var e=this,n=e.$createElement,l=e._self._c||n;return l("keep-alive",[l("router-view")],1)},u=[],a={name:"villagebox"},r=a,c=l("2877"),i=Object(c["a"])(r,t,u,!1,null,null,null);n["default"]=i.exports}}]);

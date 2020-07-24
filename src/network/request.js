@@ -1,377 +1,756 @@
 import axios from "axios"
+import store from "../store"
+// 添加请求拦截器
 
-export function requeste(config) {
+export function newrequest(config) {
     const instance1 = axios.create({
-        baseURL: "http://47.105.118.98/jdpth/",
+        baseURL: "http://huitengit.com/admin-api/",
         timeout: 5000
     })
-    instance1.interceptors.response.use((res) => {
-        return res.data
-    }, err => {
-        return Promise.reject(err)
-    })
-    return instance1(config)
-}
-export function request_login(config) {
-    const instance1 = axios.create({
-        baseURL: "http://www.huitengit.com/jdpth/",
-        timeout: 5000
-    })
-    instance1.interceptors.response.use((res) => {
-        return res.data
-    }, err => {
-        return Promise.reject(err)
-    })
-    return instance1(config)
-}
-export function requestf(config) {
-    const instance1 = axios.create({
-        baseURL: "http://47.105.118.98/jdpt/",
-        timeout: 5000
-    })
-    instance1.interceptors.response.use((res) => {
-        return res.data
-    }, err => {
-        return Promise.reject(err)
-    })
+    instance1.interceptors.request.use(config => {
+        // 在发送请求之前做些什么
+        //判断是否存在token，如果存在将每个页面header都添加token
+        if (store.state.token) {
+            config.headers.Authorization = 'Bearer  ' + store.state.token
+        }
+        return config;
+    }, error => {
+        // 对请求错误做些什么
+        return Promise.reject(error);
+    });
+
+    // http response 拦截器
+    instance1.interceptors.response.use(
+        response => {
+            return response.data;
+        },
+        error => {
+            return Promise.reject(error.response)
+        });
+
     return instance1(config)
 }
 
-// 登录
-export function post_login(str1, str2, str3) {
-    return request_login({
-        url: "h/llogin",
+function geturl(obj) {
+    var url = `?`
+    for (let item in obj) {
+        let value = obj[item]
+        if (typeof value === "number") {
+            url += `${item}=${value}&`
+        } else if (typeof value === "string") {
+            if (item.toString() === "join") {
+                let arr = value.split(",")
+                arr.forEach(thevalue => {
+                    url += `${item}=${thevalue}&`
+                })
+            } else {
+                url += `${item}=${value}&`
+            }
+        } else {
+            url += `${item}=${JSON.stringify(value)}`
+        }
+    }
+    return url
+}
+
+// 新连接
+
+// 领导登录
+export function post_user_login(username, password) {
+    return newrequest({
+        url: `user/login`,
         method: "POST",
         dataType: "JSON",
         params: {
-            mAccountnumber: str1,
-            mPassword: str2,
-            mType: Number(str3)
+            username: username,
+            password: password
         }
     })
 }
-// 通过时间和id得到反馈数量0：全区
-export function post_fksum(id, theday) {
-    return requeste({
-        url: "Fankuileader",
-        method: "POST",
+// 获取用户信息
+export function get_user_info() {
+    return newrequest({
+        url: `user/info`,
+        method: "GET",
         dataType: "JSON",
-        params: {
-            zhenId: id,
-            time: theday
-        }
-    })
-}
-//  通过时间得到反馈类型数量0：全区
-export function post_fltype(time) {
-    return requeste({
-        url: "qulxbintu",
-        method: "POST",
-        dataType: "JSON",
-        params: {
-            time: time
-        }
-    })
-}
-// 通过得到近年来全区资金（年表）
-export function post_zijin_all(id) {
-    return requeste({
-        url: "leaderCapitalController/findAllCapital",
-        method: "POST",
-        dataType: "JSON",
-        params: {
-            regionId: id
-        }
-    })
-}
-// 通过镇id和年份startpage, pagesize获取组织活动
-export function post_huodong(id, year, thepage, pagesize) {
-    return requeste({
-        url: "h/huodongFindByZhenAndTime",
-        method: "POST",
-        dataType: "JSON",
-        params: {
-            mZhenid: id,
-            year: year,
-            startPage: thepage,
-            pageSize: pagesize
-        }
-    })
-}
-// 得到全区党员情况
-export function post_dylist() {
-    return requeste({
-        url: "CountByqu",
-        method: "POST",
-        dataType: "JSON",
-    })
-}
-// 通过镇id获取所有村
-export function post_villages_zhen(id) {
-    return requeste({
-        url: "cun_List",
-        method: "POST",
-        dataType: "JSON",
-        params: {
-            zhenId: id
-        }
-    })
-}
-// 根据镇id获取反馈列表
-export function post_fankui_zhen(thetime, zhuangtai, startPage, pageSize, zhenId) {
-    return requeste({
-        url: "ququanfankui",
-        method: "POST",
-        dataType: "JSON",
-        params: {
-            time: thetime,
-            zhuangtai: zhuangtai,
-            startPage: startPage,
-            pageSize: pageSize,
-            zhenId: zhenId
-        }
-    })
-}
-// 通过镇名字和村id获取反馈列表
-export function post_fankui_V(time, zhuangtai, startPage, pageSize, zhenName, vId) {
-    return requeste({
-        url: "ququanfankui",
-        method: "POST",
-        dataType: "JSON",
-        params: {
-            time: time,
-            zhuangtai: zhuangtai,
-            startPage: startPage,
-            pageSize: pageSize,
-            zhenname: zhenName,
-            villageId: vId
-        }
-    })
-}
-// 通过反馈id获取反馈详情
-export function get_fkdetail_byid(id) {
-    return requestf({
-        url: `/YichuliInfo/${id}`,
-        dataType: "JSON",
-        method: "GET"
-    })
-}
-// 获取反馈类型
-export function get_feedback_type() {
-    return requestf({
-        url: `/AllBacktype/`,
-        dataType: "JSON",
-        method: "GET"
-    })
-}
-// 获取村图片
-export function get_v_imgs(vid) {
-    return requestf({
-        url: `FindVimg/${vid}`,
-        dataType: "JSON",
-        method: "GET"
-    })
-}
-// 主页获取村简介
-export function get_v_intro(vid) {
-    return requestf({
-        url: `FindVillagesurveyByVid/${vid}`,
-        dataType: "JSON",
-        method: "GET"
-    })
-}
-// 村发展规划
-export function get_v_guihua(vid) {
-    return requestf({
-        url: `FindCunfazhanByVillageId/${vid}`,
-        dataType: "JSON",
-        method: "GET"
     })
 }
 
-// 获取村干部列表，根据村ID
-export function get_vmanagers_list(vid) {
-    return requestf({
-        url: `PageFindVillagecadres/${vid}/1/1000`,
-        dataType: "JSON",
-        method: "GET"
-    })
-}
-// 获取补助对象通过页码和村id，默认一页显示10条
-export function get_subsidyObj_by_vid(vid, page, pagesize) {
-    return requestf({
-        url: `PageFindSubsidyobjectByCunId/${vid}/${page}/${pagesize}`,
-        dataType: "JSON",
-        method: "GET"
-    })
-}
-// 获取补助对象通过页码和村id,姓名，默认一页显示10条
-export function get_subsidyObj_by_vidAndName(vid, name, page, pagesize) {
-    return requestf({
-        url: `SearchSubsidyobjectByName/${vid}/${name}/${page}/${pagesize}`,
-        dataType: "JSON",
-        method: "GET"
-    })
-}
+// 通过村id获取村简介
 
-// 获取补助户通过页码和村id，默认一页显示10条
-export function get_buzhuhu_by_vid(vid, page, pagesize) {
-    return requestf({
-        url: `PageFindBuzhuhuById/${vid}/${page}/${pagesize}`,
-        dataType: "JSON",
-        method: "GET"
-    })
-}
 
-// 获取村会议通过页码和村id，默认一页显示10条
-export function get_huiyi_by_vid(vid, page, pageSize) {
-    return requestf({
-        url: `FindHuiyiByCunId/${vid}/${page}/${pageSize}`,
-        dataType: "JSON",
-        method: "GET"
-    })
-}
-// 获取村活动通过页码和村id，默认一页显示10条
-export function get_activity_by_vid(vid, page, pagesize) {
-    return requestf({
-        url: `ListHuoDong/${vid}/${page}/${pagesize}`,
-        dataType: "JSON",
-        method: "GET"
-    })
-}
-//获取迁入迁出通过页码和村id，默认一页显示10条,type迁出为2，迁入为1
-export function get_qianyi_by_vid(vid, type, page, pageSize) {
-    return requestf({
-        url: `FindByCunIdLeixing/${vid}/${type}/${page}/${pageSize}`,
-        dataType: "JSON",
-        method: "GET"
-    })
-}
 
-// 通过会议id获取活动详情
-export function get_meeting_details(id) {
-    return requestf({
-        url: `HuiYiXQ/${id}`,
-        dataType: "JSON",
-        method: "GET"
-    })
-}
-// 通过活动id获取会议详情
-export function get_activity_details(id) {
-    return requestf({
-        url: `Cunzuzhihuodongxq/${id}`,
-        dataType: "JSON",
-        method: "GET"
-    })
-}
-// 通过迁入迁出id获取迁入详情
-export function get_qianyi_details(id) {
-    return requestf({
-        url: `FindHKQYById/${id}`,
-        dataType: "JSON",
-        method: "GET"
-    })
-}
-
-// 通过zhenid获取全镇资金详情
-export function post_zjin_zhen(zhenId) {
-    return requeste({
-        url: "leaderCapitalController/findAllCapitalByZhenId",
-        method: "POST",
+// 群众意见建议处理
+export function get_feedback(cid, fields) {
+    return newrequest({
+        url: `feedback/${cid}`,
+        method: "GET",
         dataType: "JSON",
         params: {
-            zhenId: zhenId
-        }
-    })
-}
-/*
-type:
-1:积极分子
-2：发展对象
-3：预备党员
-4：正式党员
-*/
-export function post_dylist_bytype(vid, page, pageSize, type, year) {
-    return requestf({
-        url: `QSelect/`,
-        dataType: "JSON",
-        method: "POST",
-        params: {
-            villageId: vid,
-            year: year,
-            entity: type,
-            startPage: page,
-            pageSize: pageSize
+            fields: fields
         }
     })
 }
 
-// 获取党组织活动类型列表，通过页码
-export function get_dzuzhihd_by_vid(vid) {
-    return requestf({
-        url: `queryAllLeiXing/1/10000/${vid}`,
+export function get_feedbacks(params) {
+    return newrequest({
+        url: `feedback${geturl(params)}`,
+        method: "GET",
         dataType: "JSON",
-        method: "GET"
     })
 }
-// 通过类型id查找活动列表queryAllHuoDong
-export function get_dzuzhihd_list_by_vid(vid, page, zid, pageSize) {
-    return requestf({
-        url: `queryAllHuoDong/${page}/${pageSize}/${zid}/${vid}`,
+// 全区意见建议
+export function get_feedbacks_bytown() {
+    return newrequest({
+        url: `town?join=village&join=village.feedback`,
+        method: "GET",
         dataType: "JSON",
-        method: "GET"
-    })
-}
-// 通过id获取党组织活动详情
-export function get_dzuzhihd_detail_by_id(id) {
-    return requestf({
-        url: `queryHuoDongById/${id}`,
-        dataType: "JSON",
-        method: "GET"
     })
 }
 
-// 通过村id和年饭获取资金区域图
-export function post_vzijin_year(vid, year) {
-    return requeste({
-        url: "leaderCapitalController/findAllCapitalByVillageId/",
+export function get_partymembers_bytown() {
+    return newrequest({
+        url: `town?join=village&join=village.partymember`,
+        method: "GET",
         dataType: "JSON",
-        method: "POST",
+    })
+}
+// 通过区朝招镇
+
+// 通过村民id获取村民信息
+export function get_towns(params) {
+    return newrequest({
+        url: `town${geturl(params)}`,
+        method: "GET",
+        dataType: "JSON",
+    })
+}
+
+export function get_villages(params) {
+    return newrequest({
+        url: `village${geturl(params)}`,
+        method: "GET",
+        dataType: "JSON",
+    })
+}
+
+
+export function get_villager(cid) {
+    return newrequest({
+        url: `villager/${cid}`,
+        method: "GET",
+        dataType: "JSON",
+    })
+}
+
+export function get_villagers(params) {
+    return newrequest({
+        url: `villager/${geturl(params)}`,
+        method: "GET",
+        dataType: "JSON",
+    })
+}
+
+
+
+export function get_village_intro(vid) {
+    return newrequest({
+        url: `village/${vid}`,
+        method: "GET",
+        dataType: "JSON",
         params: {
-            villageId: vid,
-            date: year
+            join: "villageCadre"
         }
     })
 }
-// 通过资金id获取资金详情 url:uri+"findByZijinId/"+zjid,
-export function get_zijinintro_byid(id) {
-    return requestf({
-        url: `findByZijinId/${id}`,
+
+
+
+// 获取村公告
+export function get_village_bulletins(vid, pageSize, page, fields) {
+    return newrequest({
+        url: `village-bulletin-board`,
+        method: "GET",
         dataType: "JSON",
-        method: "GET"
+        params: {
+            fields: fields,
+            limit: pageSize,
+            page: page,
+            join: "village",
+            s: {
+                "village.id": {
+                    "$eq": vid
+                }
+            },
+            sort: "createdAt,ASC"
+        }
     })
 }
-//通过村id获取资源 uri1 + "ResourceSelectDetalies/"+villageId+"/"+startpage+"/"+pagesize,
-export function get_ziyuan_list_byvid(vid, page, pagesize) {
-    return requestf({
-        url: `ResourceSelectDetalies/${vid}/${page}/${pagesize}`,
+
+export function get_village_bulletin(bid, fields) {
+    return newrequest({
+        url: `village-bulletin-board/${bid}`,
+        method: "GET",
         dataType: "JSON",
-        method: "GET"
+        params: {
+            fields: fields
+        }
     })
 }
-//  url: uri1 + "findAssetsDetailsByCunid/"+villageId+"/"+startpage+"/"+pagesize,
-export function get_zichan_list_byvid(vid, page, pagesize) {
-    return requestf({
-        url: `findAssetsDetailsByCunid/${vid}/${page}/${pagesize}`,
+
+// 获取村干部信息
+export function get_village_cadres(params) {
+    return newrequest({
+        url: `village-cadre/${geturl(params)}`,
+        method: "GET",
         dataType: "JSON",
-        method: "GET"
+        // params: {
+        //     join: "village",
+        //     s: {
+        //         "village.id": {
+        //             "$eq": Number(vid)
+        //         }
+        //     },
+        // }
     })
 }
-//通过村id 获取项目建设信息
-export function get_project_byid(vid, page) {
-    return requestf({
-        url: `queryOperationManagements/${page}/8/${vid}`,
+
+export function get_village_cadre(cid, fields) {
+    return newrequest({
+        url: `village-cadre/${cid}`,
+        method: "GET",
         dataType: "JSON",
-        method: "GET"
+        params: {
+            fields: fields
+        }
+    })
+}
+
+// 获取村会议信息
+export function get_village_meetings(params) {
+    return newrequest({
+        url: `village-meeting/${geturl(params)}`,
+        method: "GET",
+        dataType: "JSON",
+        // params: {
+        //     // fields: fields,
+        //     limit: pageSize,
+        //     page: page,
+        //     join: "village",
+        //     s: {
+        //         "village.id": {
+        //             "$eq": Number(vid)
+        //         }
+        //     },
+        //     // sort: "createdAt,ASC"
+        // }
+    })
+}
+
+export function get_village_meeting(cid, fields) {
+    return newrequest({
+        url: `village-meeting/${cid}`,
+        method: "GET",
+        dataType: "JSON",
+        params: {
+            fields: fields
+        }
+    })
+}
+// 获取村活动信息
+export function get_village_actions(params) {
+    return newrequest({
+        url: `village-action/${geturl(params)}`,
+        method: "GET",
+        dataType: "JSON",
+        // params: {
+        //     // fields: fields,
+        //     limit: pageSize,
+        //     page: page,
+        //     join: "village",
+        //     s: {
+        //         "village.id": {
+        //             "$eq": Number(vid)
+        //         }
+        //     },
+        //     // sort: "createdAt,ASC"
+        // }
+    })
+}
+
+export function get_village_action(cid, fields) {
+    return newrequest({
+        url: `village-action/${cid}`,
+        method: "GET",
+        dataType: "JSON",
+        params: {
+            fields: fields
+        }
+    })
+}
+// 获取项目建设信息
+export function get_project_constractions(vid, pageSize, page, fields) {
+    return newrequest({
+        url: `project-construction`,
+        method: "GET",
+        dataType: "JSON",
+        params: {
+            // fields: fields,
+            limit: pageSize,
+            page: page,
+            join: "village",
+            s: {
+                "village.id": {
+                    "$eq": Number(vid)
+                }
+            },
+            // sort: "createdAt,ASC"
+        }
+    })
+}
+
+export function get_project_construction(cid, fields) {
+    return newrequest({
+        url: `project-construction/${cid}`,
+        method: "GET",
+        dataType: "JSON",
+        params: {
+            fields: fields
+        }
+    })
+}
+
+// 获取党组织活动类型信息
+export function get_action_types(params) {
+    return newrequest({
+        url: `org-action-type/${geturl(params)}`,
+        method: "GET",
+        dataType: "JSON",
+        // params: {
+        //     // fields: fields,
+        //     limit: pageSize,
+        //     page: page,
+        //     join: "village",
+        //     s: {
+        //         "village.id": {
+        //             "$eq": Number(vid)
+        //         }
+        //     },
+        //     // sort: "createdAt,ASC"
+        // }
+    })
+}
+
+export function get_action_type(cid, fields) {
+    return newrequest({
+        url: `org-action-type/${cid}`,
+        method: "GET",
+        dataType: "JSON",
+        params: {
+            fields: fields
+        }
+    })
+}
+// 获取党组织活动
+export function get_org_actions(params) {
+    return newrequest({
+        //  url: `org-action?limit=${pageSize}&page=${page}&s={"village.id":{"$eq":${vid}},"type.id":{"$eq":${type}}}&join=village&join=type`,
+        url: `org-action/${geturl(params)}`,
+        method: "GET",
+        dataType: "JSON",
+        // params: {
+        //     fields: fields,
+        //     limit: pageSize,
+        //     page: page,
+        //     join: "village&join=type",
+        //     join: {
+        //         "village",
+        //         type
+        //     },
+        //     s: {
+        //         "village.id": {
+        //             "$eq": Number(vid)
+        //         },
+        //         "type.id": {
+        //             "$eq": Number(type)
+        //         }
+        //     },
+        //     sort: "createdAt,ASC"
+        // }
+    })
+}
+
+export function get_org_action(cid, fields) {
+    return newrequest({
+        url: `org-action/${cid}`,
+        method: "GET",
+        dataType: "JSON",
+        params: {
+            fields: fields
+        }
+    })
+}
+// 获取党员信息
+export function get_party_members(params) {
+    return newrequest({
+        url: `party-member/${geturl(params)}`,
+        method: "GET",
+        dataType: "JSON",
+    })
+}
+
+export function get_party_member(cid, fields) {
+    return newrequest({
+        url: `party-member/${cid}`,
+        method: "GET",
+        dataType: "JSON",
+        params: {
+            fields: fields
+        }
+    })
+}
+
+// 获取补助类型信息
+export function get_subsidy_types(params) {
+    return newrequest({
+        url: `subsidy-type/${geturl(params)}`,
+        method: "GET",
+        dataType: "JSON",
+    })
+}
+
+export function get_subsidy_type(cid, fields) {
+    return newrequest({
+        url: `subsidy-type/${cid}`,
+        method: "GET",
+        dataType: "JSON",
+        params: {
+            fields: fields
+        }
+    })
+}
+// 获取补助类型信息
+export function get_subsidys(params) {
+    return newrequest({
+        url: `subsidy/${geturl(params)}`,
+        method: "GET",
+        dataType: "JSON",
+    })
+}
+// console.log(geturl({
+//     // fields: fields,
+//     limit: 10,
+//     page: 1,
+//     join: "village,type",
+//     s: {
+//         "village.id": {
+//             "$eq": Number(9)
+//         },
+//         "type.id": {
+//             "$eq": 13
+//         }
+//     },
+// }));
+
+
+export function get_subsidy(cid, fields) {
+    return newrequest({
+        url: `subsidy/${cid}`,
+        method: "GET",
+        dataType: "JSON",
+        params: {
+            fields: fields
+        }
+    })
+}
+
+// export function get_subsidy_infos(vid, personal, pageSize, page, keyword1, fields) {
+export function get_subsidy_infos(params) {
+    return newrequest({
+        // url: `subsidy-info?limit=${pageSize}&page=${page}&s={"village.id":{"$eq":${vid}},"name":{"$cont":${keyword}},"personal":${personal}}&join=village&join=subsidy`,
+        url: `subsidy-info/${geturl(params)}`,
+        method: "GET",
+        dataType: "JSON",
+    })
+}
+
+export function get_subsidy_info(cid, fields) {
+    return newrequest({
+        url: `subsidy-info/${cid}`,
+        method: "GET",
+        dataType: "JSON",
+        params: {
+            fields: fields
+        }
+    })
+}
+
+// 获取户口迁移信息
+export function get_migraters(params) {
+    return newrequest({
+        url: `migrate/${geturl(params)}`,
+        method: "GET",
+        dataType: "JSON",
+        // params: {
+        //     fields: fields,
+        //     limit: pageSize,
+        //     page: page,
+        //     join: "village",
+        //     s: {
+        //         "village.id": {
+        //             "$eq": Number(vid)
+        //         },
+        //         "type": type
+        //     },
+        // }
+    })
+}
+
+export function get_migrater(cid, fields) {
+    return newrequest({
+        url: `migrate/${cid}`,
+        method: "GET",
+        dataType: "JSON",
+        params: {
+            fields: fields
+        }
+    })
+}
+// 获取组信息
+export function get_groups(vid, fields) {
+    return newrequest({
+        url: `group`,
+        method: "GET",
+        dataType: "JSON",
+        params: {
+            fields: fields,
+            join: "village",
+            s: {
+                "village.id": {
+                    "$eq": Number(vid)
+                }
+            },
+        }
+    })
+}
+
+export function get_group(cid, fields) {
+    return newrequest({
+        url: `group/${cid}`,
+        method: "GET",
+        dataType: "JSON",
+        params: {
+            fields: fields
+        }
+    })
+}
+
+// 获取资源类别信息
+export function get_resource_types(vid) {
+    return newrequest({
+        url: `resources-type`,
+        method: "GET",
+        dataType: "JSON",
+        params: {
+            join: "village",
+            s: {
+                "village.id": {
+                    "$eq": Number(vid)
+                }
+            },
+        }
+    })
+}
+
+export function get_resource_type(cid, fields) {
+    return newrequest({
+        url: `resources-type/${cid}`,
+        method: "GET",
+        dataType: "JSON",
+        params: {
+            fields: fields
+        }
+    })
+}
+
+// 查询资源
+export function get_resources(params) {
+    let vid = 9
+    return newrequest({
+        // url: `resources?limit=${pageSize}&page=${page}&s={"group.id":{"$eq":${zid}},"type.id":{"$eq":${type}}}&join=group&join=type`,
+        url: `resources/${geturl(params)}`,
+        // url: `resources?limit=${pageSize}&page=${page}&s={"village.id":{"$eq":${vid}}}&join=village`,
+        method: "GET",
+        dataType: "JSON",
+        // params: {
+        //     fields: fields,
+        //     join: "village",
+        //     s: {
+        //         "village.id": {
+        //             "$eq": Number(vid)
+        //         }
+        //     },
+        // }
+    })
+}
+
+export function get_resource(cid, fields) {
+    return newrequest({
+        url: `resources/${cid}`,
+        method: "GET",
+        dataType: "JSON",
+        params: {
+            fields: fields
+        }
+    })
+}
+// 获取资产类型
+export function get_assets_types(vid, fields) {
+    return newrequest({
+        url: `assets-type`,
+        method: "GET",
+        dataType: "JSON",
+        params: {
+            fields: fields,
+            join: "village",
+            s: {
+                "village.id": {
+                    "$eq": Number(vid)
+                }
+            },
+        }
+    })
+}
+
+export function get_assets_type(cid, fields) {
+    return newrequest({
+        url: `assets-type/${cid}`,
+        method: "GET",
+        dataType: "JSON",
+        params: {
+            fields: fields
+        }
+    })
+}
+// 查询经营性资产
+export function get_assetss(params) {
+    return newrequest({
+        //  url: `assets?limit=${pageSize}&page=${page}&s={"village.id":{"$eq":${vid}},"type.id":${type}}&join=village&join=type`,
+        url: `assets/${geturl(params)}`,
+        method: "GET",
+        dataType: "JSON",
+        // params: {
+        //     fields: fields,
+        //     limit: pageSize,
+        //     page: page,
+        //     join: "village",
+        //     s: {
+        //         "village.id": {
+        //             "$eq": Number(vid)
+        //         },
+        //         "type": type
+        //     },
+        // }
+    })
+}
+
+export function get_assets(cid, fields) {
+    return newrequest({
+        url: `assets/${cid}?join=operatingAssets&join=nonOperatingAssets`,
+        method: "GET",
+        dataType: "JSON",
+        // params: {
+        //     fields: fields
+        // }
+    })
+}
+// 查询资金zid
+export function get_funds(params) {
+    return newrequest({
+        url: `funds/${geturl(params)}`,
+        method: "GET",
+        dataType: "JSON",
+        // params: {
+        //     limit: pageSize,
+        //     page: page,
+        //     join: "group",
+        //     s: {
+        //         "group.id": {
+        //             "$eq": Number(zid)
+        //         },
+        //         "type": type,
+        //         "time": {
+        //             "$cont": time.toString()
+        //         },
+        //     },
+        // }
+    })
+}
+
+export function get_fund(cid, fields) {
+    return newrequest({
+        url: `funds/${cid}`,
+        method: "GET",
+        dataType: "JSON",
+        params: {
+            fields: fields
+        }
+    })
+}
+// 查询学习园地
+export function get_learning_resources(type, pageSize, page) {
+    return newrequest({
+        url: `learning-resources`,
+        method: "GET",
+        dataType: "JSON",
+        params: {
+            limit: pageSize,
+            page: page,
+            s: {
+                "type": type
+            },
+        }
+    })
+}
+
+export function get_learning_resource(cid, fields) {
+    return newrequest({
+        url: `learning-resources/${cid}`,
+        method: "GET",
+        dataType: "JSON",
+        params: {
+            fields: fields
+        }
+    })
+}
+
+
+
+// 村民修改密码
+// export function patch_villager(cid, password, phone, address, sex) {
+
+export function patch_villager(cid, formdata) {
+    console.log(formdata);
+    return newrequest({
+        url: `villager/${cid}`,
+        method: "PATCH",
+        dataType: "JSON",
+        data: {
+            ...formdata
+        }
+    })
+}
+
+
+// 上传图片
+export function post_file(file) {
+    return newrequest({
+        url: `app/upload`,
+        method: "POST",
+        dataType: "JSON",
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        },
+        data: file
     })
 }

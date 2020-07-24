@@ -1,5 +1,5 @@
 <template>
-  <div class="charts"
+  <div class="mycharts"
        ref="pie01">
   </div>
 </template>
@@ -19,7 +19,9 @@ export default {
       myChart.showLoading();
       // 绘制图表
       let vm = this;
+      console.log(vm.pie01data);
       myChart.setOption({
+        // backgroundColor: '#efefef',
         title: {
           text: vm.pie01data.name,
           top: "3%",
@@ -45,11 +47,11 @@ export default {
         },
         series: [
           {
-            name: vm.pie01data.name,
+            name: vm.pie01data.name2,
             type: 'pie',
-            radius: '60%',
-            center: ['50%', '50%'],
-            roseType: 'radius',
+            radius: '40%',
+            // center: ['50%', '50%'],
+            // roseType: 'radius',
             label: {
               show: false
             },
@@ -62,13 +64,13 @@ export default {
               show: true
             },
             data: vm.pie01data.data,
-            animationEasing: 'elasticOut',
-            animationDelay: function (idx) {
-              return Math.random() * 200;
-            }
+            // animationEasing: 'elasticOut',
+            // animationDelay: function (idx) {
+            //   return Math.random() * 200;
+            // }
           },
         ],
-        color: ["#66b5aa", "#32b588", "#01a068", "#04d88e", "#92fcd7", "#c6f8e7"]
+        // color: ["#66b5aa", "#32b588", "#01a068", "#04d88e", "#92fcd7", "#c6f8e7"]
       });
       myChart.hideLoading();
       myChart.on('click', function (param) {

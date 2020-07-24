@@ -1,1 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d0ba336"],{"35ca":function(e,n,t){"use strict";t.r(n);var a=function(){var e=this,n=e.$createElement,t=e._self._c||n;return t("keep-alive",{attrs:{exclude:"dwdetail"}},[t("router-view")],1)},l=[],u={name:"dwindex"},c=u,r=t("2877"),i=Object(r["a"])(c,a,l,!1,null,null,null);n["default"]=i.exports}}]);

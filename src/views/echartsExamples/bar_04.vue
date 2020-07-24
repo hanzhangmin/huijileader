@@ -111,6 +111,9 @@ export default {
           data: vm.legenddata,
           top: '2%',
           left: "40",
+          selected: {
+            [vm.legenddata[0]]: true,
+          }
         },
         xAxis: {
           type: 'category',
@@ -133,4 +136,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+table tr:nth-child(2n-1) {
+  background-color: fade(@mainColor, 20%);
+}
 </style>

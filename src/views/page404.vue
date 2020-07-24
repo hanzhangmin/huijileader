@@ -24,15 +24,17 @@ div {
   left: 50%;
   transform: translate(-50%, -50%);
   color: @mainColor;
-  font-size: 6rem;
+  font-size: 4rem;
   p {
     text-align: center;
     button {
+      border: none;
+      outline: none;
       background-color: #efefef;
       color: @mainColor;
       cursor: pointer;
       padding: 0.5rem 2rem;
-      font-size: 2rem;
+      font-size: 1rem;
       height: auto;
       border-radius: 0.5rem;
       -webkit-transition: background-color 0.5s ease-in, color 0.5s ease-in;

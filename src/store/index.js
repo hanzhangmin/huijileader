@@ -5,12 +5,9 @@ import {
     gettruenumber
 } from "assets/js/myjs"
 
-
 const store = new Vuex.Store({
     state: {
-        // urlf: "http://47.105.118.98/jdpt/",
-        // urle: "http://47.105.118.98/jdpth/"
-        zhensx: [{
+        towns: [{
                 zhenid: 6,
                 zhenName: "刘寨街道办事处",
                 sName: "刘寨街道"
@@ -51,29 +48,57 @@ const store = new Vuex.Store({
                 sName: "花园口镇"
             },
         ],
-        status: Boolean(sessionStorage.getItem("status")), //身份true为区领导，false为镇领导
-        studyurl: "",
-        imgurl: "http://47.105.118.98/jdpt/",
-        vmanagerurl: "http://47.105.118.98/jdpt/HJResourse/VillagecadresImages/",
-        // 村干部照片路径
-        vhuiyipurl: "http://47.105.118.98/jdpt/HJResourse/CunHuiyi/",
-        // 村会议照片路径
-        vhuodongpurl: "http://47.105.118.98/jdpt/HJResourse/Cunhuodong/",
-        // 村活动照片路径
-        vqypurl: "http://47.105.118.98/jdpt/HJResourse/HuKouqianyi/",
-        // 迁移照片路径
-        // 组织活动照片路径
-        zzhdpurl: "http://47.105.118.98/jdpt/HJResourse/Zuzhihuodong/",
-        // 学习园地党规党纪
-        styfilesdddj: "http://47.105.118.98/jdpt/HJResourse/Law/",
-        // 反馈图片路径
-        feedbackurl: "http://47.105.118.98/jdpt/HJResourse/Feedback/",
-        // 资源图片路径
-        ziyuanurl: "http://47.105.118.98/jdpt/HJResourse/CunHuiyi/"
+        id: localStorage.id,
+        name: localStorage.name,
+        townid: localStorage.townid,
+        level: localStorage.level,
+        townname: localStorage.townname,
+        areaid: localStorage.areaid,
+        areaname: localStorage.areaname,
+        villageid: localStorage.villageid,
+        villagename: localStorage.villagename,
+        token: localStorage.token
     },
     mutations: {
-        changestatus(state, status) {
-            state.status = status
+        set_level(state, level) {
+            state.level = level
+            localStorage.level = level
+        },
+        set_id(state, id) {
+            state.id = Number(id)
+            localStorage.id = Number(id)
+        },
+        set_townid(state, townid) {
+            state.townid = Number(townid)
+            localStorage.townid = Number(townid)
+        },
+        set_townname(state, townname) {
+            state.townname = townname
+            localStorage.townname = townname
+        },
+        set_areaid(state, areaid) {
+            state.areaid = Number(areaid)
+            localStorage.areaid = Number(areaid)
+        },
+        set_areaname(state, areaname) {
+            state.areaname = areaname
+            localStorage.areaname = areaname
+        },
+        set_name(state, name) {
+            state.name = name
+            localStorage.name = name
+        },
+        set_token(state, token) {
+            state.token = token
+            localStorage.token = token
+        },
+        set_villageid(state, villageid) {
+            state.villageid = villageid
+            localStorage.villageid = villageid
+        },
+        set_villagename(state, villagename) {
+            state.villagename = villagename
+            localStorage.villagename = villagename
         }
     },
     getters: {

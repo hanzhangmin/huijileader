@@ -10,22 +10,6 @@ export default {
   props: {
     chartDate: Object
   },
-  data () {
-    return {
-      // chartDate: {
-      //   xAxisData: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"],
-      //   timelineData: [12, 13, 14, 15, 16],
-      //   types: ["1", "2"],
-      //   seriesData: [
-      //     { seriesNames: ["1", "2"], seriesValue: [[1, 2, 3, 3, 5, 7], [4, 6, 3, 7, 3, 2]] },
-      //     { seriesNames: ["1", "2"], seriesValue: [[2, 2, 3, 7, 1, 2], [4, 6, 3, 7, 3, 2]] },
-      //     { seriesNames: ["1", "2"], seriesValue: [[5, 6, 3, 3, 5, 4], [1, 26, 3, 5, 3, 2]] },
-      //     { seriesNames: ["1", "2"], seriesValue: [[4, 2, 5, 3, 3, 7], [4, 8, 12, 7, 5, 5]] },
-      //     { seriesNames: ["1", "2"], seriesValue: [[1, 2, 3, 2, 5, 7], [4, 9, 3, 7, 3, 2]] }
-      //   ]
-      // }
-    }
-  },
   mounted () {
     this.drawLine();
   },
@@ -154,4 +138,9 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+.charts {
+  position: relative;
+  min-width: 100%;
+  min-height: 100%;
+}
 </style>

@@ -4,85 +4,73 @@ Vue.use(vueRouter)
     // 登录
 const login = () =>
     import ("views/login/login.vue")
-
-const index_qu = () =>
-    import ("views/index_qu/index.vue")
-const qqfkindex = () =>
-    import ("views/index_qu/fankui/fkindex.vue")
-const qqfkbody = () =>
-    import ("views/index_qu/fankui/fkbody.vue")
-const qqfklist = () =>
-    import ("views/index_qu/fankui/fankuilist.vue")
-const qqfklistz = () =>
-    import ("views/index_qu/fankui/fankuilistz.vue")
-const fkdetail = () =>
-    import ("views/index_qu/fankui/fankuidetail.vue")
-const qqzjindex = () =>
-    import ("views/index_qu/zijin/zijinindex.vue")
-const qqdwindex = () =>
-    import ("views/index_qu/dangwu/dwindex.vue")
-const qqdwbody = () =>
-    import ("views/index_qu/dangwu/dwbody.vue")
-const dwdetail = () =>
-    import ("views/index_qu/dangwu/dwdetail.vue")
-const index_zhen = () =>
-    import ("views/index_zhen/index.vue")
-const zhenfankui = () =>
-    import ("views/index_zhen/fankui.vue")
-const zhenzijin = () =>
-    import ("views/index_zhen/zijin.vue")
-const zhenbuzhu = () =>
-    import ("views/index_zhen/buzhu.vue")
-const zhenzjgc = () =>
-    import ("views/index_zhen/zjxiangmu.vue")
-const zhencunwu = () =>
-    import ("views/index_zhen/cunwu/index.vue")
-const zhenvinfo = () =>
-    import ("views/index_zhen/cunwu/zhenvinfo.vue")
-const zhenvin = () =>
-    import ("views/index_zhen/cunwu/zhenvin.vue")
-const zhenvout = () =>
-    import ("views/index_zhen/cunwu/zhenvout.vue")
-const zhenvactivity = () =>
-    import ("views/index_zhen/cunwu/zhenvactivity.vue")
-const zhenvadetail = () =>
-    import ("views/index_zhen/cunwu/zhenvactivitydetail.vue")
-const zhenvmetting = () =>
-    import ("views/index_zhen/cunwu/zhenvmetting.vue")
-const zhenvmdetail = () =>
-    import ("../views/index_zhen/cunwu/zhenvmd.vue")
-const zhenvmanager = () =>
-    import ("views/index_zhen/cunwu/zhenvmanager.vue")
-const zhenvbzh = () =>
-    import ("views/index_zhen/cunwu/buzhuhu.vue")
-const zhenvbzo = () =>
-    import ("views/index_zhen/cunwu/buzhuobj.vue")
-const zhendyfazhan = () =>
-    import ("views/index_zhen/dyfazhan/index.vue")
-const zhendzzhd = () =>
-    import ("views/index_zhen/dyfazhan/zhendzzhd.vue")
-const zhendzadetail = () =>
-    import ("views/index_zhen/dyfazhan/zhendzadetail.vue")
-const zhenfzdx = () =>
-    import ("views/index_zhen/dyfazhan/zhenfzdx.vue")
-const zhenjjfz = () =>
-    import ("views/index_zhen/dyfazhan/zhenjjfz.vue")
-const zhenybdy = () =>
-    import ("views/index_zhen/dyfazhan/zhenybdy.vue")
-const zhenzsdy = () =>
-    import ("views/index_zhen/dyfazhan/zhenzsdy.vue")
-const zhensanzi = () =>
-    import ("views/index_zhen/sanzi/index.vue")
-const zhenzichan = () =>
-    import ("views/index_zhen/sanzi/zichan.vue")
-const zhenziyuan = () =>
-    import ("views/index_zhen/sanzi/ziyuan.vue")
-const zhenzijin1 = () =>
-    import ("views/index_zhen/sanzi/zijin.vue")
-    // const indexonlyzhen = () =>
-    //     import ("views/index_zhen/indexzhen.vue")
+const home = () =>
+    import ("views/home/home.vue")
 const page404 = () =>
     import ("views/page404.vue")
+    // 意见建议
+const suggestion = () =>
+    import ("views/home/suggestion/suggestion.vue")
+    // 三资
+const finance = () =>
+    import ("views/home/finance/finance.vue")
+    // 资产
+const assets = () =>
+    import ("views/home/finance/Assets.vue")
+    // 资金
+const fund = () =>
+    import ("views/home/finance/Fund.vue")
+    // 资源
+const resource = () =>
+    import ("views/home/finance/Resource.vue")
+    // 党务
+const Party = () =>
+    import ("views/home/party/party.vue")
+    // 党员发展
+const PartyMember = () =>
+    import ("views/home/party/PartyMember.vue")
+    // 党组织活动
+const PartyActivity = () =>
+    import ("views/home/party/PartyActivity.vue")
+    // 村信息
+const villagebox = () =>
+    import ("views/home/village/villagebox.vue")
+    // 村简介
+const cadre = () =>
+    import ("views/home/village/Cadre.vue")
+    // 村民
+const villager = () =>
+    import ("views/home/village/Villager.vue")
+    // 村干部
+const villagemember = () =>
+    import ("views/home/village/Member.vue")
+    // 村活动
+const vActivity = () =>
+    import ("views/home/village/Activity.vue")
+    // 村会议
+const vMeeting = () =>
+    import ("views/home/village/VMeeting.vue")
+    // 村补助项
+const subsitytype = () =>
+    import ("views/home/village/Subsidytype.vue")
+    // 村补助户
+const subsityfamily = () =>
+    import ("views/home/village/Subsidyfamily.vue")
+    // 村补助对象
+const subsityperson = () =>
+    import ("views/home/village/Subsidyperson.vue")
+    // 户口迁移
+const vmigration = () =>
+    import ("views/home/village/qianyi.vue")
+    // 大数据一览表
+const BigData = () =>
+    import ("views/home/BigData/BigData.vue")
+const DataFunds = () =>
+    import ("views/home/BigData/Funds.vue")
+const DataPartyMembers = () =>
+    import ("views/home/BigData/PartyMembers.vue")
+const DataSuggestions = () =>
+    import ("views/home/BigData/Suggestions.vue")
 const routes = [{
         path: '',
         redirect: "/login",
@@ -94,335 +82,115 @@ const routes = [{
         meta: "登录"
     },
     {
-        path: "/indexqu",
-        component: index_qu,
-        meta: "区内详情",
+        path: "/home",
+        component: home,
+        meta: "首页",
         children: [{
-                    path: "",
-                    redirect: "qqfkindex"
-                },
-                {
-                    path: "qqfkindex",
-                    component: qqfkindex,
-                    children: [{
-                            path: "",
-                            redirect: "qqfkbody"
-                        },
-                        {
-                            path: "qqfkbody",
-                            component: qqfkbody
-                        },
-                        {
-                            path: "qqfklist/:type/:id",
-                            component: qqfklist
-                        },
-                        {
-                            path: "qqfklistz/:type/:id/:zhenname",
-                            component: qqfklistz
-                        },
-                        {
-                            path: "fkdetail/:fkid",
-                            component: fkdetail
-                        }
-                    ]
-                },
-                {
-                    path: "qqzjindex",
-                    component: qqzjindex
-                },
-                {
-                    path: "qqdwindex",
-                    component: qqdwindex,
-                    children: [{
-                            path: "",
-                            redirect: "qqdwbody"
-                        },
-                        {
-                            path: "qqdwbody",
-                            component: qqdwbody
-                        },
-                        {
-                            path: "dwdetail/:id",
-                            component: dwdetail
-                        }
-                    ]
-                },
-
-            ]
-            // qqdwindex
-            //qqfklistz
-    },
-    {
-        path: "/indexzhen/:zhen_id",
-        component: index_zhen,
-        meta: "镇内详情",
-        children: [{
-                path: "",
-                redirect: "zhenfankui"
+                path: '',
+                redirect: "suggestion",
             },
             {
-                path: "zhenfankui",
-                component: zhenfankui
+                path: "suggestion",
+                component: suggestion,
             },
             {
-                path: "zhenfkdetail/:fkid",
-                component: fkdetail
-            },
-            {
-                path: "zhenzijin",
-                component: zhenzijin
-            },
-            {
-                path: "zhenbuzhu/:vid",
-                component: zhenbuzhu
-            },
-            {
-                path: "zhenzjgc/:vid",
-                component: zhenzjgc
-            },
-            {
-                path: "zhencunwu",
-                component: zhencunwu,
-                children: [
-                    // {
-                    //       path: "",
-                    //       redirect: "zhenvinfo/:vid"
-                    //   }, 
-                    {
-                        path: "zhenvmanager/:vid",
-                        component: zhenvmanager
-                    }, {
-                        path: "zhenvactivity/:vid",
-                        component: zhenvactivity
+                path: "finance",
+                component: finance,
+                children: [{
+                        path: "assets",
+                        component: assets,
                     },
                     {
-                        path: "zhenvinput/:vid",
-                        component: zhenvin
+                        path: "fund",
+                        component: fund,
                     },
                     {
-                        path: "zhenvinfo/:vid",
-                        component: zhenvinfo
+                        path: "resource",
+                        component: resource,
                     },
-                    {
-                        path: "zhenvmetting/:vid",
-                        component: zhenvmetting
-                    },
-                    {
-                        path: "zhenvout/:vid",
-                        component: zhenvout
-                    },
-                    {
-                        path: "zhenvbzh/:vid",
-                        component: zhenvbzh
-                    },
-                    {
-                        path: "zhenvbzo/:vid",
-                        component: zhenvbzo
-                    },
-                    {
-                        path: "zhenvadetail/:chdid",
-                        component: zhenvadetail
-                    },
-                    {
-                        path: "zhenvmdetail/:chyid",
-                        component: zhenvmdetail
-                    }
                 ]
             },
             {
-                path: "zhendyfazhan",
-                component: zhendyfazhan,
-                meta: "组织发展",
-                children: [
-                    // {
-                    //       path: "",
-                    //       redirect: "zhenjjfz/:vid"
-                    //   },
-                    {
-                        path: "zhenjjfz/:vid",
-                        component: zhenjjfz
+                path: "bigdata",
+                component: BigData,
+                children: [{
+                        path: "funds",
+                        component: DataFunds,
                     },
                     {
-                        path: "zhenfzdx/:vid",
-                        component: zhenfzdx
+                        path: "partymembers",
+                        component: DataPartyMembers,
                     },
                     {
-                        path: "zhenybdy/:vid",
-                        component: zhenybdy
+                        path: "suggestions",
+                        component: DataSuggestions,
                     },
-                    {
-                        path: "zhenzsdy/:vid",
-                        component: zhenzsdy
-                    },
-                    {
-                        path: "zhendzzhd/:vid",
-                        component: zhendzzhd
-                    },
-                    {
-                        path: "zhendzadetail/:zhid",
-                        component: zhendzadetail
-                    }
                 ]
             },
             {
-                path: "zhensanzi",
-                component: zhensanzi,
-                meta: "三资",
-                children: [
-                    // {
-                    //       path: "",
-                    //       redirect: "zhenzijin/:vid"
-                    //   },
-                    {
-                        path: "zhenzijincun/:vid",
-                        component: zhenzijin1
+                path: "Party",
+                component: Party,
+                children: [{
+                        path: "PartyMember",
+                        component: PartyMember
                     },
                     {
-                        path: "zhenziyuan/:vid",
-                        component: zhenziyuan
+                        path: "PartyActivity",
+                        component: PartyActivity
                     },
-                    {
-                        path: "zhenzichan/:vid",
-                        component: zhenzichan
-                    }
                 ]
-            }
+            },
+            {
+                path: "villagebox",
+                component: villagebox,
+                children: [{
+                        path: "cadre",
+                        component: cadre
+                    },
+                    {
+                        path: "villagemember",
+                        component: villagemember
+                    },
+                    {
+                        path: "subsityfamily",
+                        component: subsityfamily
+                    },
+                    {
+                        path: "subsityperson",
+                        component: subsityperson
+                    },
+                    {
+                        path: "subsitytype",
+                        component: subsitytype
+                    },
+                    {
+                        path: "vActivity",
+                        component: vActivity
+                    },
+                    {
+                        path: "villager",
+                        component: villager
+                    },
+                    {
+                        path: "vMeeting",
+                        component: vMeeting
+                    },
+                    {
+                        path: "vmigration",
+                        component: vmigration
+                    },
+                ]
+            },
         ]
     },
-    // {
-    //     path: "/thezhen/:zhen_id",
-    //     component: indexonlyzhen,
-    //     meta: "镇内详情",
-    //     children: [{
-    //             path: "",
-    //             redirect: "zhenfankui"
-    //         },
-    //         {
-    //             path: "zhenfankui",
-    //             component: zhenfankui
-    //         },
-    //         {
-    //             path: "zhenfkdetail/:id",
-    //             component: fkdetail
-    //         },
-    //         {
-    //             path: "zhenzijin",
-    //             component: zhenzijin
-    //         },
-    //         {
-    //             path: "zhenbuzhu/:vid",
-    //             component: zhenbuzhu
-    //         },
-    //         {
-    //             path: "zhenzjgc/:vid",
-    //             component: zhenzjgc
-    //         },
-    //         {
-    //             path: "zhencunwu",
-    //             component: zhencunwu,
-    //             meta: "村务",
-    //             children: [{
-    //                     path: "",
-    //                     redirect: "zhenvinfo/:vid"
-    //                 }, {
-    //                     path: "zhenvmanager/:vid",
-    //                     component: zhenvmanager
-    //                 }, {
-    //                     path: "zhenvactivity/:vid",
-    //                     component: zhenvactivity
-    //                 },
-    //                 {
-    //                     path: "zhenvinput/:vid",
-    //                     component: zhenvin
-    //                 },
-    //                 {
-    //                     path: "zhenvinfo/:vid",
-    //                     component: zhenvinfo
-    //                 },
-    //                 {
-    //                     path: "zhenvmetting/:vid",
-    //                     component: zhenvmetting
-    //                 },
-    //                 {
-    //                     path: "zhenvout/:vid",
-    //                     component: zhenvout
-    //                 },
-    //                 {
-    //                     path: "zhenvadetail/:chdid",
-    //                     component: zhenvadetail
-    //                 }
-    //             ]
-    //         },
-    //         {
-    //             path: "zhendyfazhan",
-    //             component: zhendyfazhan,
-    //             meta: "组织发展",
-    //             children: [{
-    //                     path: "",
-    //                     redirect: "zhenjjfz/:vid"
-    //                 },
-    //                 {
-    //                     path: "zhenjjfz/:vid",
-    //                     component: zhenjjfz
-    //                 },
-    //                 {
-    //                     path: "zhenfzdx/:vid",
-    //                     component: zhenfzdx
-    //                 },
-    //                 {
-    //                     path: "zhenybdy/:vid",
-    //                     component: zhenybdy
-    //                 },
-    //                 {
-    //                     path: "zhenzsdy/:vid",
-    //                     component: zhenzsdy
-    //                 },
-    //                 {
-    //                     path: "zhendzzhd/:vid",
-    //                     component: zhendzzhd
-    //                 }
-    //             ]
-    //         },
-    //         {
-    //             path: "zhensanzi",
-    //             component: zhensanzi,
-    //             meta: "三资",
-    //             children: [{
-    //                     path: "",
-    //                     redirect: "zhenzijin/:vid"
-    //                 },
-    //                 {
-    //                     path: "zhenzijin/:vid",
-    //                     component: zhenzijin1
-    //                 },
-    //                 {
-    //                     path: "zhenziyuan/:vid",
-    //                     component: zhenziyuan
-    //                 },
-    //                 {
-    //                     path: "zhenzichan/:vid",
-    //                     component: zhenzichan
-    //                 }
-    //             ]
-    //         }
-    //     ]
-    // },
     {
         path: '*',
         component: page404,
     },
-
 ]
 const router = new vueRouter({
     routes,
-    // mode: "history"
 })
 
-router.beforeEach((to, from, next) => {
-    try {
-        document.title = to.matched[0].meta;
-    } catch (error) {}
-    next() // next()为必须使用的函数
-})
 
 export default router

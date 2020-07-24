@@ -5,7 +5,9 @@ import "babel-polyfill"
 import router from "./router"
 import store from "./store"
 import echarts from 'echarts'
-import mytoast from "./components/commen/myToast/toast"
+
+import hzmMask from './components/commen1/Mask/hzmMask'
+Vue.use(hzmMask)
 import Viewer from 'v-viewer'
 import 'viewerjs/dist/viewer.css'
 Vue.use(Viewer, {
@@ -13,10 +15,12 @@ Vue.use(Viewer, {
         zIndex: 9999
     }
 })
-Vue.use(mytoast)
+
 Vue.prototype.$echarts = echarts
 Vue.config.productionTip = false
-
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+Vue.use(ElementUI);
 new Vue({
     render: h => h(App),
     router,
