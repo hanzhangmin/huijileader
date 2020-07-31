@@ -29,6 +29,12 @@ export default {
       // 基于准备好的dom，初始化echarts实例
       let myChart = this.$echarts.init(this.$refs.bar05)
       // 绘制图表
+      // let seriesdata = []
+      // for (let index = 0; index < --this.source[0].length; index++) {
+      //   seriesdata.push({
+      //     type: 'bar'
+      //   })
+      // }
       console.log(this.source);
       myChart.showLoading();
       let vm = this
@@ -55,7 +61,10 @@ export default {
           source: vm.source
         },
         xAxis: { type: 'category' },
-        yAxis: {},
+        yAxis: {
+          name: "条",
+          splitNumber: 1
+        },
         series: [
           { type: 'bar' },
           { type: 'bar' },

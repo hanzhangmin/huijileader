@@ -12,14 +12,14 @@
           // population: 5200
       </div> -->
       <div class="villagecontent">
-        <p>
+        <p style="text-align:right;">
           <b class="cardspan">占地面积：{{itemdata.footprint}}平方千米</b>
           <b class="cardspan"> 现有人口：{{itemdata.population}}人</b>
         </p>
-        村简介
-        <span>
+        <h2>村简介</h2>
+        <p style="width: 100%;font-size:18px;line-height:26px;">
           {{itemdata.introduction}}
-        </span>
+        </p>
       </div>
       <div class="demo-image__lazy">
         <el-image v-for="(file,index) in itemdata.image"

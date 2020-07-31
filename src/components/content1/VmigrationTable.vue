@@ -9,7 +9,7 @@
                   :data="tableData"
                   border
                   v-loading="loading"
-                  style="width: 100%"
+                  style="width: 100%;font-size:16px;"
                   height="80vh">
           <el-table-column fixed
                            prop="name"
@@ -36,7 +36,7 @@
             <template slot-scope="scope">
               <el-button @click="handleClick(scope.row)"
                          type="text"
-                         size="small">详情</el-button>
+                         size=" medium">详情</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -121,7 +121,7 @@ export default {
         "$between": [this.time1, this.time2],
       }
       if (this.type !== "0") {
-        s["type"] = Number(this.type)
+        s["type"] = this.type
       }
       get_migraters({
         limit: this.pageSize,

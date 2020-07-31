@@ -1,7 +1,7 @@
 <template>
   <div>
     {{areaname}}:
-    <el-select v-if="$store.state.level!=1"
+    <el-select v-if="$store.state.level!=0"
                disabled
                v-model="townid"
                :size="size"
@@ -56,7 +56,7 @@ export default {
   name: "AssetsSearch",
   data () {
     return {
-      size: "mini",
+      size: "medium",
       townid: "0",
       villages: [],
       villageid: "0",
@@ -110,7 +110,10 @@ export default {
         }      }
       )
         .then(res => {
-          this.villageid = res[0].id.toString()
+          if (res.length != 0) {
+            this.villageid = res[0].id.toString()
+          }
+
           this.villages = res.map(v => {
             return {
               id: v.id.toString(),

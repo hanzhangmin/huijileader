@@ -4,8 +4,10 @@
       <TownSearch @villageSearch="TownSearch" />
     </div>
     <div slot="body">
-      <pie01 :key="reloadpie01"
-             :pie01data="pie01data" />
+      <div style="height:400px;">
+        <pie01 :key="reloadpie01"
+               :pie01data="pie01data" />
+      </div>
     </div>
   </BaseCard2>
 </template>

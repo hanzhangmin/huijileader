@@ -10,7 +10,7 @@
                   :data="tableData"
                   border
                   v-loading="loading"
-                  style="width: 100%"
+                  style="width: 100%;font-size:16px;"
                   height="80vh">
           <el-table-column fixed
                            prop="name"
@@ -111,7 +111,7 @@
             <template slot-scope="scope">
               <el-button @click="handleClick(scope.row)"
                          type="text"
-                         size="small">查看照片</el-button>
+                         size=" medium">查看照片</el-button>
             </template>
           </el-table-column> -->
         </el-table>

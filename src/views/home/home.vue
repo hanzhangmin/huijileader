@@ -23,26 +23,32 @@
       <div class="logo">
         <!-- <img src="~assets/imgs/huijilogo3.png"> -->
         <div class="img">
-          <!-- 郑州市惠济区<br> -->
+          郑州市惠济区<br>
           村（居）务监督平台
         </div>
       </div>
       <div class="menu">
         <el-menu ref="elmenu"
+                 :key="reloadmenu"
                  :collapse="isCollapse"
                  :default-active="defaultPath"
-                 class="el-menu-vertical-demo"
                  @open="handleOpen"
                  @close="handleClose"
-                 background-color="rgba(0,0,0,0)"
-                 text-color="rgba(255,255,255,0.5)"
-                 active-text-color="#ffffff"
                  :unique-opened="true"
+                 style="font-size:20px;"
                  router>
-          <el-menu-item index="/home/suggestion">
+          <el-submenu index="suggestion">
+            <template slot="title">
+              <i class="el-icon-s-flag"></i>
+              <span>群众意见建议</span>
+            </template>
+            <el-menu-item index="/home/suggestion/sugsum">数据分析</el-menu-item>
+            <el-menu-item index="/home/suggestion/sugtable">列表详情</el-menu-item>
+          </el-submenu>
+          <!-- <el-menu-item index="/home/suggestion">
             <i class="el-icon-s-comment"></i>
             <span slot="title">群众意见建议</span>
-          </el-menu-item>
+          </el-menu-item> -->
           <el-submenu index="Party">
             <template slot="title">
               <i class="el-icon-s-flag"></i>
@@ -81,7 +87,7 @@
               <span slot="title">数据可视化一览表</span>
             </template>
             <el-menu-item index="/home/bigdata/funds">资金</el-menu-item>
-            <el-menu-item index="/home/bigdata/suggestions">群众意见建议</el-menu-item>
+            <!-- <el-menu-item index="/home/bigdata/suggestions">群众意见建议</el-menu-item> -->
             <el-menu-item index="/home/bigdata/partymembers">党员发展</el-menu-item>
           </el-submenu>
         </el-menu>
@@ -101,9 +107,10 @@ export default {
   name: "home",
   data () {
     return {
-      defaultPath: "/home/suggestion",
+      defaultPath: "/home/suggestion/sugsum",
       isCollapse: false,
-      changefold: "el-icon-s-fold"
+      changefold: "el-icon-s-fold",
+      reloadmenu: ""
     }
   },
   created () {
@@ -146,14 +153,10 @@ export default {
     // }
   },
   watch: {
-    // $route (to, from) {
-    //   try {
-    //     this.defaultPath = to.path
-    //   } catch (error) {
-    //   }
-    //   console.log(to.path);
-    // }
-
+    $route (to) {
+      this.defaultPath = to.path
+      this.reloadmenu = (new Date()).getTime()
+    }
   },
 }
 </script>
@@ -171,7 +174,7 @@ export default {
     text-align: right;
     position: fixed;
     height: 50px;
-    left: 220px;
+    left: 260px;
     right: 0px;
     right: 0px;
     background-color: #ffffff;
@@ -210,27 +213,27 @@ export default {
     background-size: cover;
     left: 0;
     height: 100vh;
-    width: 220px;
+    width: 260px;
     top: 0;
     z-index: 10;
     overflow-x: hidden;
     transition: all 0.3s;
     -webkit-transition: all 0.3s;
     .menu {
-      padding-top: 50px;
+      padding-top: 100px;
     }
     .logo {
       position: fixed;
       background-color: #4e73df;
       z-index: 10;
-      width: 220px;
+      width: 260px;
       text-align: center;
       color: #ffffff;
       height: auto;
       line-height: 50px;
       border-bottom: 1px solid rgba(0, 0, 0, 0.2);
       .img {
-        font-size: 20px;
+        font-size: 24px;
         font-family: "华文行楷";
       }
 
@@ -253,7 +256,7 @@ export default {
     position: fixed;
     top: 50px;
     bottom: 0;
-    left: 220px;
+    left: 260px;
     z-index: 998;
     overflow-y: auto;
     box-sizing: border-box;

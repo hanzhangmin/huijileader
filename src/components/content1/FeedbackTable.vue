@@ -10,7 +10,7 @@
                   :data="tableData"
                   border
                   v-loading="loading"
-                  style="width: 100%"
+                  style="width: 100%;font-size:16px;"
                   height="80vh">
           <el-table-column fixed
                            prop="title"
@@ -45,21 +45,26 @@
             <template slot-scope="scope">
               <el-button @click="handleClick(scope.row)"
                          type="text"
-                         size="small">查看</el-button>
+                         size=" medium">查看</el-button>
             </template>
           </el-table-column>
         </el-table>
       </div>
       <div slot="footer">
-        <el-pagination background
-                       @size-change="handleSizeChange"
-                       @current-change="handleCurrentChange"
-                       :current-page="currentPage"
-                       :page-sizes="[16, 20, 50, 100]"
-                       :page-size="pageSize"
-                       layout="total, sizes, prev, pager, next, jumper"
-                       :total="total">
-        </el-pagination>
+        <div v-if="showpageselect">
+          <el-pagination background
+                         @size-change="handleSizeChange"
+                         @current-change="handleCurrentChange"
+                         :current-page="currentPage"
+                         :page-sizes="[16, 20, 50, 100]"
+                         :page-size="pageSize"
+                         layout="total, sizes, prev, pager, next, jumper"
+                         :total="total">
+          </el-pagination>
+        </div>
+        <div v-else>
+          共{{total}}条
+        </div>
       </div>
     </BaseCard>
     <div class="mask"
@@ -107,7 +112,7 @@
   </div>
 </template>
 <script>
-import { get_feedbacks } from 'network/request'
+import { get_feedbacks, get_villages } from 'network/request'
 import { formatDate, isnull } from 'assets/js/myjs'
 import BaseCard from "components/commen1/BaseCard"
 import BaseCard2 from "components/commen1/BaseCard2"
@@ -123,6 +128,7 @@ export default {
   },
   data () {
     return {
+      townid: "",
       pageSize: 16,
       currentPage: 1,
       total: 0,
@@ -135,27 +141,141 @@ export default {
       type: "",
       processed: "",
       villageid: "",
+      showpageselect: true
     }
   },
   created () {
     // this.showcard = true
   },
   methods: {
+    getfeedback_town () {
+      this.loading = true
+      get_villages({
+        join: "town",
+        fields: "id,name",
+        s: {
+          "town.id": {
+            "$eq": Number(this.townid)
+          }
+        }
+      }).then(res => {
+        let promises = res.map(village => {
+
+          let s = {
+          }
+          switch (this.processed) {
+            case "true":
+              s["processed"] = true
+              break;
+            case "false":
+              s["processed"] = false
+              break;
+            default:
+              break;
+          }
+          if (this.type != "6") {
+            s["type"] = this.type
+          }
+          s["village.id"] = { "$eq": Number(village.id) }
+          s["createdAt"] = {
+            "$between": [new Date(this.time[0]).toISOString(), new Date(this.time[1]).toISOString()],
+          }
+          return get_feedbacks(
+            {
+              join: "village,villager",
+              s: s
+            }
+          )
+        })
+        Promise.all(promises)
+          .then(res => {
+            console.log(res);
+            let arr = []
+            res.forEach(element => {
+              arr.push(...element)
+            });
+            console.log(arr);
+            this.total = arr.length
+            this.tableData.splice(0)
+            this.tableData = arr.map((feedback, index) => {
+              let name = feedback.villager.name
+              if (feedback.anonymous === true) {
+                name: "匿名"
+              }
+              let img
+              try {
+                if (feedback.relatedDocuments != null) {
+                  img = feedback.relatedDocuments.map(file => {
+                    return file.url
+                  })
+                }
+              } catch (error) {
+                // console.log(error);
+              }
+              let status = ""
+              switch (feedback.status) {
+                case 0:
+                  status = "村级处理"
+                  break;
+                case 1:
+                  status = "镇级处理"
+                  break;
+                case 2:
+                  status = "区级处理"
+                  break;
+                default:
+                  status = "--"
+                  break;
+              }
+              let handler = "处理中..."
+              if (feedback.handler != null) {
+                handler = isnull(feedback.handler.name)
+              }
+              return {
+                id: feedback.id,
+                index: index,
+                title: isnull(feedback.title),
+                name: isnull(name),
+                time: formatDate(new Date(feedback.createdAt), "yyyy-MM-dd"),
+                content: isnull(feedback.content),
+                status: status,
+                handler: handler,
+                handlRes: isnull(feedback.handlRes),
+                upMessage: isnull(feedback.upMessage),//向上级反馈附带信息
+                downMessage: isnull(feedback.downMessage),//退回反馈附带信息
+                img: img
+              }
+            })
+            this.loading = false
+          })
+      })
+    },
     getfeedbacks () {
       this.loading = true
       let s = {
       }
-      if (this.processed != "0") {
-        s["processed"] = Boolean(this.processed)
+      switch (this.processed) {
+        case "true":
+          s["processed"] = true
+          break;
+        case "false":
+          s["processed"] = false
+          break;
+        default:
+          break;
       }
+      // if (this.processed != "0") {
+      //   s["processed"] = this.processed
+      // }
       if (this.type != "6") {
-        s["type"] = Number(this.type)
+        s["type"] = this.type
       }
-      s["village.id"] = { "$eq": Number(this.villageid) }
+      if (this.villageid != "0") {
+        s["village.id"] = { "$eq": Number(this.villageid) }
+      }
       s["createdAt"] = {
         "$between": [new Date(this.time[0]).toISOString(), new Date(this.time[1]).toISOString()],
       }
-      s["village.id"]
       get_feedbacks({
         limit: this.pageSize,
         page: this.currentPage,
@@ -169,16 +289,19 @@ export default {
           this.total = res.total
           this.tableData.splice(0)
           this.tableData = res.data.map((feedback, index) => {
-            console.log(index);
             let name = feedback.villager.name
             if (feedback.anonymous === true) {
               name: "匿名"
             }
             let img
-            if (feedback.relatedDocuments != null) {
-              img = feedback.relatedDocuments.map(file => {
-                return file.url
-              })
+            try {
+              if (feedback.relatedDocuments != null) {
+                img = feedback.relatedDocuments.map(file => {
+                  return file.url
+                })
+              }
+            } catch (error) {
+              // console.log(error);
             }
             let status = ""
             switch (feedback.status) {
@@ -216,19 +339,25 @@ export default {
           })
         })
     },
-    searchFeedback (villageid, processed, type, time) {
-      this.time = time
-      this.type = type
-      this.processed = processed
-      this.villageid = villageid
-      this.getfeedbacks()
+    searchFeedback (townid, villageid, processed, type, time) {
+      this.time = time;
+      this.type = type;
+      this.townid = townid;
+      this.processed = processed;
+      this.villageid = villageid;
+      console.log(villageid);
+      if (villageid === "0") {
+        this.showpageselect = false
+        this.getfeedback_town()
+      } else {
+        this.showpageselect = true
+        this.getfeedbacks()
+      }
     },
     handleClick (scope) {
-      // this.$showMask.showMask()
       console.log(scope.index);
       this.itemdata = this.tableData[Number(scope.index)]
       this.showcard = true
-
     },
     handleSizeChange (val) {
       this.pageSize = Number(val)
@@ -249,6 +378,15 @@ export default {
     },
     hidenMask () {
       this.showcard = false
+    }
+  },
+  watch: {
+    $route (to) {
+      if (to.query) {
+        if (to.query.townid) {
+          this.showpageselect = false
+        }
+      }
     }
   },
 }

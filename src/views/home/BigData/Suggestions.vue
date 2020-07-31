@@ -11,17 +11,21 @@
                  :pie01data="piedatatype" />
         </div> -->
           <div class="flexsize1">
-            <pie02 :key="reloadpiepro"
-                   :pie02data="piedatapro" />
+            <div style="height:400px;">
+              <pie02 :key="reloadpiepro"
+                     :pie02data="piedatapro" />
+            </div>
           </div>
           <div class="flexsize1">
-            <bar01 :chartdata="chartdatabar"
-                   :key="reloadbar" />
+            <div style="height:400px;">
+              <bar01 :chartdata="chartdatabar"
+                     :key="reloadbar" />
+            </div>
           </div>
         </div>
       </div>
     </BaseCard2>
-    <SuggestionArea v-if="$store.state.level==='1'" />
+    <SuggestionArea v-if="$store.state.level===0" />
   </div>
 </template>
 <script>
@@ -67,7 +71,7 @@ export default {
     SuggestionArea
   },
   created () {
-    console.log(this.$store.state.level === "1");
+
 
   },
   methods: {

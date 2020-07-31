@@ -51,7 +51,7 @@ const store = new Vuex.Store({
         id: localStorage.id,
         name: localStorage.name,
         townid: localStorage.townid,
-        level: localStorage.level,
+        level: Number(localStorage.level),
         townname: localStorage.townname,
         areaid: localStorage.areaid,
         areaname: localStorage.areaname,
@@ -61,7 +61,7 @@ const store = new Vuex.Store({
     },
     mutations: {
         set_level(state, level) {
-            state.level = level
+            state.level = Number(level)
             localStorage.level = level
         },
         set_id(state, id) {

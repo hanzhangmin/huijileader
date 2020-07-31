@@ -23,15 +23,21 @@ export default {
         // backgroundColor: '#efefef',
         title: {
           text: vm.pie02data.name,
-          top: "3%",
-          left: "3%",
+          // top: "3%",
+          // left: "3%",
           textStyle: {
             color: "#888888"
           }
         },
+        legend: {
+          orient: 'vertical',
+          right: 0,
+          top: 40,
+          data: vm.pie02data.name2,
+        },
         tooltip: {
           trigger: 'item',
-          formatter: "{a} <br/>{b}: {c} ({d}%)条"
+          formatter: "{a} <br/>{b}: {c} ({d}%)"
         },
         toolbox: {
           show: true,
@@ -46,9 +52,9 @@ export default {
         },
         series: [
           {
-            name: vm.pie02data.name2,
+            name: vm.pie02data.name3,
             type: 'pie',
-
+            right: "20",
             radius: ['40%', '48%'],
             label: {
               show: false
@@ -68,7 +74,7 @@ export default {
             }
           },
         ],
-        color: ["#224abe", "orange"]
+        color: ["#224abe", "orange", "rgb(28,200,138)", "rgb(54,185,204)", "#e74a3b", "#858796"]
       });
       myChart.hideLoading();
       myChart.on('click', function (param) {

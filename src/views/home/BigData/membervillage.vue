@@ -4,8 +4,10 @@
       <villageSearch @villageSearch="Search" />
     </div>
     <div slot="body">
-      <bar01 :chartdata="chartdatabar"
-             :key="reloadbar" />
+      <div style="height:400px;">
+        <bar01 :chartdata="chartdatabar"
+               :key="reloadbar" />
+      </div>
     </div>
   </BaseCard2>
 </template>

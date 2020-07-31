@@ -100,11 +100,13 @@ export function get_feedbacks(params) {
     })
 }
 // 全区意见建议
-export function get_feedbacks_bytown() {
+export function get_feedbacks_bytown(params) {
     return newrequest({
-        url: `town?join=village&join=village.feedback`,
+        // url: `town?join=village&join=village.feedback`,
+        url: `town/${geturl(params)}`,
         method: "GET",
         dataType: "JSON",
+
     })
 }
 
@@ -664,26 +666,22 @@ export function get_assets(cid, fields) {
         // }
     })
 }
+
+// 大数据资金查询
+
+export function get_bigdata_funds_data(date) {
+    return newrequest({
+        url: `funds/date/${date}`,
+        method: "GET",
+        dataType: "JSON",
+    })
+}
 // 查询资金zid
 export function get_funds(params) {
     return newrequest({
         url: `funds/${geturl(params)}`,
         method: "GET",
         dataType: "JSON",
-        // params: {
-        //     limit: pageSize,
-        //     page: page,
-        //     join: "group",
-        //     s: {
-        //         "group.id": {
-        //             "$eq": Number(zid)
-        //         },
-        //         "type": type,
-        //         "time": {
-        //             "$cont": time.toString()
-        //         },
-        //     },
-        // }
     })
 }
 
@@ -754,3 +752,5 @@ export function post_file(file) {
         data: file
     })
 }
+
+// 大数据镇级资金接口

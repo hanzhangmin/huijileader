@@ -56,19 +56,13 @@ import {
 } from "network/request"
 export default {
   name: "login",
-
   data () {
     return {
       form: {
-        usernum: "",
-        pas: "",
-        remember: false,
+        usernum: localStorage.usernum,
+        pas: localStorage.userpas,
+        remember: Boolean(localStorage.remember),
       }
-    }
-  },
-  created () {
-    if (localStorage.token) {
-      this.$router.replace("/home")
     }
   },
   methods: {
@@ -89,23 +83,27 @@ export default {
           });
         })
         .then(res => {
+          if (this.form.remember) {
+            localStorage.usernum = this.form.usernum
+            localStorage.userpas = this.form.pas
+            localStorage.remember = true
+          }
           console.log(res);
           this.$store.commit("set_level", res.level)
           this.$store.commit("set_id", res.id)
           this.$store.commit("set_name", res.name)
-          this.$store.commit("set_townid", res.town.id)
-          this.$store.commit("set_townname", res.town.name)
+          this.$store.commit("set_townid", res.town === null ? 6 : res.town.id)
+          this.$store.commit("set_townname", res.town === null ? "刘寨街道" : res.town.name)
           this.$store.commit("set_areaid", res.area.id)
           this.$store.commit("set_areaname", res.area.name)
-          this.$store.commit("set_villagename", res.village.name)
-          this.$store.commit("set_villageid", res.village.id)
+          this.$store.commit("set_villagename", res.village === null ? "" : res.village.name)
+          this.$store.commit("set_villageid", res.village === null ? "" : res.village.id)
           this.$router.replace("/home")
         })
     }
   }
 }
 </script>
-
 <style lang="less" scoped>
 .login {
   height: 100vh;

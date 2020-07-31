@@ -1,15 +1,15 @@
 <template>
   <div>
     {{areaname}}:
-    <el-select v-if="$store.state.level!=1"
+    <el-select v-if="$store.state.level!=0"
                disabled
                v-model="townid"
                :size="size"
                placeholder="请选择镇/街道">
       <el-option v-for="item in towns"
                  :key="'town'+item.id"
-                 :label="item.zhenName"
-                 :value="item.zhenid">
+                 :label="item.name"
+                 :value="item.id">
       </el-option>
     </el-select>
     <el-select v-else
@@ -56,7 +56,7 @@ export default {
   name: "ResourceSearch",
   data () {
     return {
-      size: "mini",
+      size: "medium",
       townid: "0",
       villages: [],
       villageid: "0",
@@ -110,7 +110,9 @@ export default {
         }      }
       )
         .then(res => {
-          this.villageid = res[0].id.toString()
+          if (res.length != 0) {
+            this.villageid = res[0].id.toString()
+          }
           this.villages = res.map(v => {
             return {
               id: v.id.toString(),

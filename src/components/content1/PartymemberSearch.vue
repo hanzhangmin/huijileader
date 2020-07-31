@@ -1,15 +1,15 @@
 <template>
   <div>
     {{areaname}}:
-    <el-select v-if="$store.state.level!=1"
+    <el-select v-if="$store.state.level!=0"
                disabled
                v-model="townid"
                :size="size"
                placeholder="请选择镇/街道">
       <el-option v-for="item in towns"
                  :key="'town'+item.id"
-                 :label="item.zhenName"
-                 :value="item.zhenid">
+                 :label="item.name"
+                 :value="item.id">
       </el-option>
     </el-select>
     <el-select v-else
@@ -56,13 +56,13 @@ export default {
   name: "VmigrationSearch",
   data () {
     return {
-      size: "mini",
+      size: "medium",
       townid: "0",
       villages: [],
       villageid: "0",
       type: "0",
       types: [
-        { id: "0", name: "全部" },
+        { id: "0", name: "全部党员" },
         { id: "5", name: "正式党员" },
         { id: "4", name: "预备党员" },
         { id: "3", name: "发展对象" },
@@ -91,7 +91,7 @@ export default {
     this.townid = this.$store.state.townid.toString()
     this.villageid = this.$store.state.villageid.toString()
     this.getvillages(this.townid)
-    this.onSubmit()
+
   },
   methods: {
     gettowns (areaid) {
@@ -118,6 +118,10 @@ export default {
         }
       })
         .then(res => {
+          if (res.length != 0) {
+            this.villageid = res[0].id.toString()
+            this.onSubmit()
+          }
           this.villages = res.map(v => {
             return {
               id: v.id.toString(),

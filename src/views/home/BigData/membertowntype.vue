@@ -4,9 +4,11 @@
       <TownSearch @villageSearch="TownSearch" />
     </div>
     <div slot="body">
-      <bar01 :name="name"
-             :source="source"
-             :key="reloadbar" />
+      <div style="height:400px;">
+        <bar01 :name="name"
+               :source="source"
+               :key="reloadbar" />
+      </div>
     </div>
   </BaseCard2>
 </template>

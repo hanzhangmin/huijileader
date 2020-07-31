@@ -10,6 +10,17 @@ export default {
   props: {
     chartDate: Object
   },
+  // data () {
+  //   return {
+  //     chartDate: {
+  //       title: "title",
+  //       legenddata: ["已处理", "未处理"],
+  //       dataname: ["1月", "bbbb", "cccc", "dddd", "eeeee", "ffffff"],
+  //       data1: [12, 32, 43, 23, 45, 23],
+  //       data2: [23, 54, 65, 24, 83, 45]
+  //     }
+  //   }
+  // },
   mounted () {
     this.drawLine();
   },
@@ -20,14 +31,14 @@ export default {
       myChart.showLoading();
       let vm = this;
       myChart.setOption({
-        title: {
-          text: vm.chartDate.title,
-          top: "3%",
-          left: "3%",
-          textStyle: {
-            color: "#888888"
-          }
-        },
+        // title: {
+        //   text: vm.chartDate.title,
+        //   // top: "3%",
+        //   left: "3%",
+        //   textStyle: {
+        //     color: "#888888"
+        //   }
+        // },
         tooltip: {
           trigger: 'axis',
           axisPointer: {
@@ -38,12 +49,12 @@ export default {
           }
         },
         legend: {
-          data: [vm.chartDate.datasign1, vm.chartDate.datasign2],
-          top: '10%',
+          data: vm.chartDate.legenddata,
+          // top: '10%',
           right: "6%",
         },
         grid: {
-          top: '20%',
+          // top: '10%',
           left: '6%',
           right: '6%',
           bottom: '5%',
@@ -74,16 +85,17 @@ export default {
           },
           show: false
         },
+
         series: [{
-          name: vm.chartDate.datasign1,
+          name: vm.chartDate.legenddata[0],
           type: 'bar',
-          barMaxWidth: 20,
+          barMaxWidth: 16,
           itemStyle: {
             emphasis: {
               barBorderRadius: 10
             },
             normal: {
-              color: "#c6f8e7",
+              // color: "#c6f8e7",
               barBorderRadius: 10,
               shadowColor: "#cccccc",
               shadowBlur: 20,
@@ -98,15 +110,15 @@ export default {
           data: vm.chartDate.data1
         }, {
           // "#026341", "#037a51", "#01a068", "#04d88e", "#92fcd7", "#c6f8e7"
-          name: vm.chartDate.datasign2,
+          name: vm.chartDate.legenddata[1],
           type: 'bar',
-          barMaxWidth: 20,
+          barMaxWidth: 16,
           itemStyle: {
             emphasis: {
               barBorderRadius: 5
             },
             normal: {
-              color: "#32b588",
+              // color: "#32b588",
               barBorderRadius: 10,
               shadowColor: "#cccccc",
               shadowBlur: 10,
@@ -120,6 +132,7 @@ export default {
           },
           data: vm.chartDate.data2
         }],
+        color: ["#224abe", "#9bb4ff"]
       });
       myChart.hideLoading();
       myChart.on('click', function (param) {

@@ -11,6 +11,10 @@ const page404 = () =>
     // 意见建议
 const suggestion = () =>
     import ("views/home/suggestion/suggestion.vue")
+const sugtable = () =>
+    import ("views/home/suggestion/SugTable.vue")
+const sugsum = () =>
+    import ("views/home/suggestion/sugBigData.vue")
     // 三资
 const finance = () =>
     import ("views/home/finance/finance.vue")
@@ -92,6 +96,18 @@ const routes = [{
             {
                 path: "suggestion",
                 component: suggestion,
+                children: [{
+                        path: '',
+                        redirect: "sugsum",
+                    }, {
+                        path: "sugtable",
+                        component: sugtable
+                    },
+                    {
+                        path: "sugsum",
+                        component: sugsum
+                    }
+                ]
             },
             {
                 path: "finance",

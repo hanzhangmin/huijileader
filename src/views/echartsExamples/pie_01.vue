@@ -70,7 +70,7 @@ export default {
             // }
           },
         ],
-        // color: ["#66b5aa", "#32b588", "#01a068", "#04d88e", "#92fcd7", "#c6f8e7"]
+        color: ["#224abe", "#9bb4ff", "#01a068", "#04d88e", "#92fcd7", "#c6f8e7"]
       });
       myChart.hideLoading();
       myChart.on('click', function (param) {

@@ -1,17 +1,19 @@
 <template>
   <div>
     {{areaname}}:
-    <el-select v-if="$store.state.level!=1"
+    <el-select v-if="$store.state.level!=0"
                disabled
                v-model="townid"
                :size="size"
                placeholder="请选择镇/街道">
       <el-option v-for="item in towns"
                  :key="'town'+item.id"
-                 :label="item.zhenName"
-                 :value="item.zhenid">
+                 :label="item.name"
+                 :value="item.id">
       </el-option>
+
     </el-select>
+    <!-- <span v-if="$store.state.level!=0">{{$store.state.townname}}>></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
     <el-select v-else
                v-model="townid"
                :size="size"
@@ -31,6 +33,9 @@
       <!-- <el-option label="全镇/街道"
                  value="0">
       </el-option> -->
+      <el-option label="全镇街道"
+                 value="0">
+      </el-option>
       <el-option v-for="item in villages"
                  :key="'village'+item.id"
                  :label="item.name"
@@ -39,6 +44,7 @@
     </el-select>
     <el-select v-model="processed"
                :size="size"
+               albel="处理状态"
                placeholder="请选择处理状态">
       <el-option v-for="item in processeds"
                  :key="'processed'+item.value"
@@ -48,6 +54,7 @@
     </el-select>
     <el-select v-model="type"
                :size="size"
+               albel="类型"
                placeholder="请选择类型">
       <el-option v-for="item in types"
                  :key="'type'+item.id"
@@ -79,13 +86,13 @@ export default {
   name: "SearchFeedback",
   data () {
     return {
-      size: "mini",
+      size: "medium",
       townid: "0",
       villages: [],
       villageid: "0",
       type: "6",
       types: [
-        { id: "6", name: "全部" },
+        { id: "6", name: "全部类别" },
         { id: "0", name: "资金" },
         { id: "1", name: "资产" },
         { id: "2", name: "资源" },
@@ -98,7 +105,7 @@ export default {
       processeds: [
         {
           value: '0',
-          label: '全部'
+          label: '全部处理情况'
         },
         {
           value: 'true',
@@ -150,13 +157,31 @@ export default {
   },
   created () {
     this.townid = this.$store.state.townid.toString()
-    this.villageid = this.$store.state.villageid.toString()
-    this.getvillages(this.townid)
+    try {
+      if (this.$route.query) {
+        if (this.$route.query.townid) {
+          this.processed = this.$route.query.type.toString()
+          this.villageid = "0"
+        } else {
+          this.processed = this.$route.query.type.toString()
+          this.villageid = this.$route.query.villageid.toString()
+        }
+      } else {
+      }
+    } catch (error) {
+
+    }
     const end = new Date();
     const start = new Date();
     start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
     this.time = [start, end]
+    this.getvillages(this.townid)
     this.onSubmit()
+    // this.townname
+    // console.log(this.townid);
+    // console.log(this.$store.state.townname);
+    // this.villageid = this.$store.state.villageid.toString()
+
   },
   methods: {
     gettowns (areaid) {
@@ -192,7 +217,7 @@ export default {
         })
     },
     onSubmit () {
-      this.$emit("searchFeedback", this.villageid, this.processed, this.type, this.time)
+      this.$emit("searchFeedback", this.townid, this.villageid, this.processed, this.type, this.time)
     }
   },
   watch: {
@@ -201,6 +226,25 @@ export default {
     },
     time (val) {
       // console.log(val);
+    },
+    $route (to) {
+      if (to.query) {
+        if (to.query.townid) {
+          this.townid = to.query.townid.toString()
+          this.processed = to.query.type.toString()
+          this.villageid = "0"
+        } else {
+          this.processed = to.query.type.toString()
+          this.villageid = to.query.villageid.toString()
+        }
+      } else {
+      }
+      const end = new Date();
+      const start = new Date();
+      start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+      this.time = [start, end]
+      this.getvillages(this.townid)
+      this.onSubmit()
     }
   },
 }

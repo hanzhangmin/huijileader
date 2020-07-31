@@ -1,57 +1,117 @@
 <template>
   <BaseCard2>
     <div slot="header">
-      全区群众意见建议柱状图
+      <TownSearch @villageSearch="TownSearch" />
     </div>
     <div slot="body">
-      <bar01 :chartdata="chartdatabar"
-             :key="reloadbar" />
+      <div class="flexbox">
+        <div class="flexsize2">
+          <div style="height:400px;">
+            <bar01 :name="name"
+                   :name1="name1"
+                   :source="source"
+                   :key="reloadbar" />
+          </div>
+        </div>
+        <div class="flexsize1">
+          <div style="height:400px;">
+            <pie01 :pie02data="pie02data"
+                   :key="reloadpie" />
+          </div>
+        </div>
+      </div>
+
     </div>
+
   </BaseCard2>
 </template>
 <script>
 import { get_feedbacks_bytown } from 'network/request'
 import BaseCard2 from "components/commen1/BaseCard2"
-// import villageSearch from 'components/content1/VillageSearch'
-import bar01 from 'views/echartsExamples/bar_01'
+import TownSearch from 'components/content1/TimetwoSearch'
+import bar01 from 'views/echartsExamples/bar_06'
+import pie01 from 'views/echartsExamples/pie_02'
+import membervillage from './membervillage'
 export default {
-  name: "SuggestionArea",
+  name: "fundArea",
   components: {
     BaseCard2,
-    bar01
+    // BaseCard,
+    // villageSearch,
+    bar01,
+    TownSearch,
+    pie01,
+    membervillage
   },
   data () {
     return {
-      chartdatabar: {
-        name: "群众意见建议柱状图",
-        // xAxisdata: ["积极分子", "发展对象", "预备党员", "正式党员"],
-        seriesname: "条",
+      townid: "",
+      time: "",
+      source: [
+        ['product', '已处理', '未处理'],
+      ],
+      name: "该镇各村资金收支柱状图",
+      name1: "条",
+      villages: [],
+      reloadbar: "11",
+      pie02data: {
+        name: "全区该时间段内群众意见建议类型占比",
+        name2: ["资金", "资产", "资源", "党务", "村务", "其他"],
+        name3: "条数",
+        // data: [
+        //   { value: 2000, name: "收入" },
+        //   { value: 2800, name: "支出" }
+        // ]
       },
-      reloadbar: ""
+      reloadpie: ""
     }
   },
-  created () {
-    get_feedbacks_bytown()
-      .then(res => {
-        console.log(res);
-        let xAxisdata = []
-        let data = []
-        res.forEach(element => {
-          xAxisdata.push(element.name)
-          let num = 0
-          element.village.forEach(village => {
-            num += village.feedback.length
+  methods: {
+    TownSearch (year) {
+      this.time = year
+      this.getChartDatabyTownid()
+    },
+    getChartDatabyTownid () {
+      get_feedbacks_bytown({
+        join: "village,village.feedback",
+        s: {
+          "createdAt": {
+            "$between": [new Date(this.time[0]).toISOString(), new Date(this.time[1]).toISOString()],
+          }
+        }
+      })
+        .then(res => {
+          console.log(res);
+          this.source.splice(1);
+          let piedata = [
+            { value: 0, name: "资金" },
+            { value: 0, name: "资产" },
+            { value: 0, name: "资源" },
+            { value: 0, name: "党务" },
+            { value: 0, name: "村务" },
+            { value: 0, name: "其他" },
+          ]
+          res.forEach(town => {
+            let data = [town.name, 0, 0]
+            town.village.forEach(village => {
+              for (let index = 0, len = village.feedback.length; index < len; index++) {
+                if (village.feedback[index].processed) {
+                  data[1]++
+                } else {
+                  data[2]++
+                }
+                piedata[village.feedback[index].type].value++
+              }
+              console.log(village.feedback);
+
+            });
+            this.source.push(data)
           });
-          data.push(num)
-        });
-        this.$set(this.chartdatabar, "seriesdata", data)
-        this.$set(this.chartdatabar, "xAxisdata", xAxisdata)
-        this.reloadbar = (new Date()).getTime()
-      })
-      .catch(err => {
-        this.$set(this.chartdatabar, "seriesdata", [])
-        this.$set(this.chartdatabar, "xAxisdata", [])
-      })
+          this.$set(this.pie02data, "data", piedata)
+          this.reloadbar = (new Date()).getTime()
+          this.reloadpie = (new Date()).getTime()
+        })
+    }
   },
 }
 </script>

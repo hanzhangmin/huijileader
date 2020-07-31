@@ -31,18 +31,18 @@ export default {
 .cb {
   box-sizing: border-box;
   background-color: white;
-  padding: 16px 11px;
+  padding: 20px 11px;
   width: 100%;
   margin-bottom: 10px;
   border-radius: 4px;
   .boxshadow();
   .title {
-    font-size: @fontsize15;
+    font-size: @fontsize20;
     color: @gray0;
     margin-bottom: 5px;
   }
   .main {
-    font-size: @fontsize12;
+    font-size: @fontsize16;
   }
 }
 </style>
