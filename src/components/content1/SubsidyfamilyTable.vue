@@ -27,7 +27,7 @@
           <el-table-column prop="applicationTime"
                            sortable
                            label="补助时间"
-                           width="auto">
+                           width="120">
           </el-table-column>
           <el-table-column prop="cause"
                            label="补助原因"

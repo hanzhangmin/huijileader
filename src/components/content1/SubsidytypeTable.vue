@@ -126,6 +126,7 @@ export default {
         limit: this.pageSize,
         page: this.page,
         join: "village,type",
+        sort: "applicationTime,DESC",
         s: {
           "village.id": {
             "$eq": Number(this.villageid)

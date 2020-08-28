@@ -1,51 +1,61 @@
 <template>
-  <div>
-    {{areaname}}:
-    <el-select v-if="$store.state.level!=0"
-               disabled
-               v-model="townid"
-               :size="size"
-               placeholder="请选择镇/街道">
-      <el-option v-for="item in towns"
-                 :key="'town'+item.id"
-                 :label="item.name"
-                 :value="item.id">
-      </el-option>
-    </el-select>
-    <el-select v-else
-               v-model="townid"
-               :size="size"
-               placeholder="请选择镇/街道">
-      <!-- <el-option label="全区"
-                 value="0">
-      </el-option> -->
-      <el-option v-for="item in towns"
-                 :key="'town'+item.id"
-                 :label="item.name"
-                 :value="item.id">
-      </el-option>
-    </el-select>
-    <el-select v-model="villageid"
-               :size="size"
-               placeholder="请选择行政村">
-      <el-option v-for="item in villages"
-                 :key="'village'+item.id"
-                 :label="item.name"
-                 :value="item.id">
-      </el-option>
-    </el-select>
-    <el-select v-model="type"
-               :size="size"
-               placeholder="请选择类型">
-      <el-option v-for="item in types"
-                 :key="'type'+item.id"
-                 :label="item.name"
-                 :value="item.id">
-      </el-option>
-    </el-select>
-    <el-button type="primary"
-               :size="size"
-               @click="onSubmit">搜索</el-button>
+  <div class="searchbox">
+    <div class="searchobj">
+      <label for="">
+        {{areaname}}：
+        <el-select v-if="$store.state.level!=0"
+                   disabled
+                   v-model="townid"
+                   :size="size"
+                   placeholder="请选择镇/街道">
+          <el-option v-for="item in towns"
+                     :key="'town'+item.id"
+                     :label="item.name"
+                     :value="item.id">
+          </el-option>
+        </el-select>
+        <el-select v-else
+                   v-model="townid"
+                   :size="size"
+                   placeholder="请选择镇/街道">
+          <el-option v-for="item in towns"
+                     :key="'town'+item.id"
+                     :label="item.name"
+                     :value="item.id">
+          </el-option>
+        </el-select>
+      </label>
+      <label for="">
+        村：
+        <el-select v-model="villageid"
+                   :size="size"
+                   placeholder="请选择行政村">
+          <el-option v-for="item in villages"
+                     :key="'village'+item.id"
+                     :label="item.name"
+                     :value="item.id">
+          </el-option>
+        </el-select>
+      </label>
+      <label for="">
+        类型：
+        <el-select v-model="type"
+                   :size="size"
+                   placeholder="请选择类型">
+          <el-option v-for="item in types"
+                     :key="'type'+item.id"
+                     :label="item.name"
+                     :value="item.id">
+          </el-option>
+        </el-select>
+      </label>
+
+    </div>
+    <div>
+      <el-button type="primary"
+                 :size="size"
+                 @click="onSubmit">搜索</el-button>
+    </div>
   </div>
 
 </template>
@@ -60,7 +70,7 @@ export default {
       townid: "0",
       villages: [],
       villageid: "0",
-      type: "类型",
+      type: "",
       types: []
     }
   },
@@ -107,7 +117,8 @@ export default {
           "town.id": {
             "$eq": Number(this.townid)
           }
-        }      }
+        }
+      }
       )
         .then(res => {
           if (res.length != 0) {
@@ -119,11 +130,13 @@ export default {
               name: v.name
             }
           })
-          console.log(this.villageid);
           return get_resource_types(this.villageid)
         })
         .then(res => {
           console.log(res);
+          if (res.length != 0) {
+            this.type = res[0].id.toString()
+          }
           this.types = res.map(type => {
             return {
               id: type.id.toString(),
@@ -167,7 +180,6 @@ export default {
         })
     },
     onSubmit () {
-      console.log(this.villageid);
       console.log(this.type);
       this.$emit("Search", this.villageid, this.type)
     }

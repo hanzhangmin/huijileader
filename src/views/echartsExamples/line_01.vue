@@ -45,10 +45,18 @@ export default {
           type: 'category',
           data: vm.xAxisdata,
           axisLine: {
-            show: false
+            lineStyle: {
+              color: '#999',
+            }
           },
           axisTick: {
-            show: false
+            lineStyle: {
+              color: '#999',
+            }
+          },
+          //网格线
+          splitLine: {
+            show: true,
           },
         },
         yAxis: {

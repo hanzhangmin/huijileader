@@ -37,9 +37,21 @@ export default {
             color: "#888888"
           },
           nameRotate: "30",
+          boundaryGap: false,
+          axisLine: {
+            lineStyle: {
+              color: '#999',
+            }
+          },
+          axisTick: {
+            lineStyle: {
+              color: '#999',
+            }
+          },
+          //网格线
           splitLine: {
-            show: true
-          }
+            show: true,
+          },
         },
         tooltip: {
           trigger: 'axis',
@@ -64,7 +76,17 @@ export default {
         yAxis: {
           type: 'value',
           name: "条",
-          splitNumber: 1
+          splitNumber: 1,
+          axisLine: {
+            lineStyle: {
+              color: '#999',
+            }
+          },
+          axisTick: {
+            lineStyle: {
+              color: '#999',
+            }
+          },
         },
         series: [{
           barMaxWidth: 20,
@@ -73,15 +95,9 @@ export default {
           data: vm.chartdata.seriesdata,
         }],
         color: ["#224abe", "#3265ff", "#6c91ff", "#9bb4ff"]
-        //         color: #224abe;
-        // color: #3265ff;
-        // color: #6c91ff;
-        // color: #9bb4ff;
       });
       myChart.hideLoading();
     }
   }
 }
 </script>
-<style lang="less" scoped>
-</style>

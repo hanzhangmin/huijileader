@@ -22,10 +22,18 @@
         </p>
       </div>
       <div class="demo-image__lazy">
-        <el-image v-for="(file,index) in itemdata.image"
+        <!-- <el-image v-for="(file,index) in itemdata.image"
                   :key="index+'file'"
                   :src="file.url"
-                  lazy></el-image>
+                  lazy></el-image> -->
+        <viewer :images="itemdata.image">
+          <div class="img"
+               v-for="(src,index) in itemdata.image"
+               :key="index">
+            <img :src="src.url"
+                 :onerror="errorImg">
+          </div>
+        </viewer>
       </div>
     </div>
   </BaseCard2>
@@ -72,4 +80,7 @@ export default {
 </script>
 
 <style>
+.demo-image__lazy {
+  text-align: center;
+}
 </style>

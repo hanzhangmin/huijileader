@@ -63,10 +63,20 @@
          v-show="showcard">
       <div class="centerbody">
         <slot name="centerbody">
-          <el-image v-for="(file,index) in itemdata.img"
-                    :key="'file'+index"
-                    :src="file.url"
-                    lazy></el-image>
+          <div class="cardcontent">
+            相关图片：
+            <viewer v-if="itemdata.img.length>0"
+                    :images="itemdata.img">
+
+              <div class="img"
+                   v-for="(src,index) in itemdata.img"
+                   :key="index">
+                <img :src="src"
+                     :onerror="errorImg">
+              </div>
+            </viewer>
+            <span v-else>无</span>
+          </div>
         </slot>
       </div>
     </div>
@@ -95,7 +105,7 @@ export default {
       pageCount: 1,
       total: 0,
       tableData: [],
-      itemdata: {},
+      itemdata: { img: [] },
       loading: true,
       showcard: false,
       villageid: "",
@@ -132,13 +142,13 @@ export default {
             // explanation: "某村谁的土地资源"
 
 
-
-            let img
-            if (data.image != null && (typeof data.image) != "object") {
-              img = data.image.map(file => {
-                return file.url
-              })
+            let img = [];
+            if (data.image != null) {
+              data.relatedDocuments.forEach(element => {
+                img.push(element.url)
+              });
             }
+
             return {
               id: data.id,
               index: index,

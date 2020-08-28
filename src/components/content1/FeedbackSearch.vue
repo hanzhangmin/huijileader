@@ -1,83 +1,96 @@
 <template>
-  <div>
-    {{areaname}}:
-    <el-select v-if="$store.state.level!=0"
-               disabled
-               v-model="townid"
-               :size="size"
-               placeholder="请选择镇/街道">
-      <el-option v-for="item in towns"
-                 :key="'town'+item.id"
-                 :label="item.name"
-                 :value="item.id">
-      </el-option>
+  <div class="searchbox">
+    <div class="searchobj">
+      <label for="">
+        {{areaname}}：
+        <el-select v-if="$store.state.level!=0"
+                   disabled
+                   v-model="townid"
+                   :size="size"
+                   placeholder="请选择镇/街道">
+          <el-option v-for="item in towns"
+                     :key="'town'+item.id"
+                     :label="item.name"
+                     :value="item.id">
+          </el-option>
 
-    </el-select>
-    <!-- <span v-if="$store.state.level!=0">{{$store.state.townname}}>></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
-    <el-select v-else
-               v-model="townid"
-               :size="size"
-               placeholder="请选择镇/街道">
-      <!-- <el-option label="全区"
+        </el-select>
+        <el-select v-else
+                   v-model="townid"
+                   :size="size"
+                   placeholder="请选择镇/街道">
+          <!-- <el-option label="全区"
                  value="0">
       </el-option> -->
-      <el-option v-for="item in towns"
-                 :key="'town'+item.id"
-                 :label="item.name"
-                 :value="item.id">
-      </el-option>
-    </el-select>
-    <el-select v-model="villageid"
-               :size="size"
-               placeholder="请选择行政村">
-      <!-- <el-option label="全镇/街道"
-                 value="0">
-      </el-option> -->
-      <el-option label="全镇街道"
-                 value="0">
-      </el-option>
-      <el-option v-for="item in villages"
-                 :key="'village'+item.id"
-                 :label="item.name"
-                 :value="item.id">
-      </el-option>
-    </el-select>
-    <el-select v-model="processed"
-               :size="size"
-               albel="处理状态"
-               placeholder="请选择处理状态">
-      <el-option v-for="item in processeds"
-                 :key="'processed'+item.value"
-                 :label="item.label"
-                 :value="item.value">
-      </el-option>
-    </el-select>
-    <el-select v-model="type"
-               :size="size"
-               albel="类型"
-               placeholder="请选择类型">
-      <el-option v-for="item in types"
-                 :key="'type'+item.id"
-                 :label="item.name"
-                 :value="item.id">
-      </el-option>
-    </el-select>
-    <el-date-picker :size="size"
-                    v-model="time"
-                    type="monthrange"
-                    align="right"
-                    unlink-panels
-                    range-separator="至"
-                    start-placeholder="开始月份"
-                    end-placeholder="结束月份"
-                    :picker-options="pickerOptions"
-                    change="changetime">
-    </el-date-picker>
-    <el-button type="primary"
-               :size="size"
-               @click="onSubmit">搜索</el-button>
+          <el-option v-for="item in towns"
+                     :key="'town'+item.id"
+                     :label="item.name"
+                     :value="item.id">
+          </el-option>
+        </el-select>
+      </label>
+      <!-- <span v-if="$store.state.level!=0">{{$store.state.townname}}>></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
+      <label for="">
+        村：
+        <el-select v-model="villageid"
+                   :size="size"
+                   placeholder="请选择行政村">
+          <el-option label="所有村"
+                     value="0">
+          </el-option>
+          <el-option v-for="item in villages"
+                     :key="'village'+item.id"
+                     :label="item.name"
+                     :value="item.id">
+          </el-option>
+        </el-select>
+      </label>
+      <label for="">
+        状态：
+        <el-select v-model="processed"
+                   :size="size"
+                   albel="处理状态"
+                   placeholder="请选择处理状态">
+          <el-option v-for="item in processeds"
+                     :key="'processed'+item.value"
+                     :label="item.label"
+                     :value="item.value">
+          </el-option>
+        </el-select>
+      </label>
+      <label for="">
+        类型：
+        <el-select v-model="type"
+                   :size="size"
+                   placeholder="请选择类型">
+          <el-option v-for="item in types"
+                     :key="'type'+item.id"
+                     :label="item.name"
+                     :value="item.id">
+          </el-option>
+        </el-select>
+      </label>
+      <label for="">
+        时间段：
+        <el-date-picker :size="size"
+                        v-model="time"
+                        type="daterange"
+                        align="right"
+                        unlink-panels
+                        range-separator="至"
+                        start-placeholder="开始月份"
+                        end-placeholder="结束月份"
+                        :picker-options="pickerOptions"
+                        change="changetime">
+        </el-date-picker>
+      </label>
+    </div>
+    <div>
+      <el-button type="primary"
+                 :size="size"
+                 @click="onSubmit">搜索</el-button>
+    </div>
   </div>
-
 </template>
 
 <script>
@@ -126,7 +139,17 @@ export default {
               start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
               picker.$emit('pick', [start, end]);
             }
-          }, {
+          },
+          {
+            text: '最近半年',
+            onClick (picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30 * 6);
+              picker.$emit('pick', [start, end]);
+            }
+          },
+          {
             text: '最近一年',
             onClick (picker) {
               const end = new Date();
@@ -134,7 +157,10 @@ export default {
               start.setTime(start.getTime() - 3600 * 1000 * 24 * 365);
               picker.$emit('pick', [start, end]);
             }
-          }]
+          }],
+        disabledDate (time) {
+          return time.getTime() > new Date().getTime()
+        }
       },
     }
   },
@@ -156,7 +182,7 @@ export default {
     }
   },
   created () {
-    this.townid = this.$store.state.townid.toString()
+    this.townid = this.$store.state.fktownid.toString();
     try {
       if (this.$route.query) {
         if (this.$route.query.townid) {
@@ -172,6 +198,9 @@ export default {
 
     }
     const end = new Date();
+    // console.log(new Date("2020-08-24T05:42:41.000Z"));
+    // end.setTime(end.getTime() + 3600 * 1000 * 24);
+    console.log(end.toISOString());
     const start = new Date();
     start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
     this.time = [start, end]
@@ -217,6 +246,10 @@ export default {
         })
     },
     onSubmit () {
+      // if (localStorage.time) {
+      // }
+      // this.time = localStorage.time.split(",")
+      console.log(this.time);
       this.$emit("searchFeedback", this.townid, this.villageid, this.processed, this.type, this.time)
     }
   },
@@ -230,19 +263,16 @@ export default {
     $route (to) {
       if (to.query) {
         if (to.query.townid) {
-          this.townid = to.query.townid.toString()
-          this.processed = to.query.type.toString()
-          this.villageid = "0"
+          this.townid = to.query.townid.toString();
+          this.processed = to.query.type.toString();
+          // this.villageid = "0";
         } else {
           this.processed = to.query.type.toString()
           this.villageid = to.query.villageid.toString()
         }
       } else {
       }
-      const end = new Date();
-      const start = new Date();
-      start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-      this.time = [start, end]
+
       this.getvillages(this.townid)
       this.onSubmit()
     }

@@ -4,7 +4,8 @@
       <TownSearch @villageSearch="TownSearch" />
     </div>
     <div slot="body">
-      <div style="height:400px;">
+      <div style="height:400px;"
+           v-loading="loading">
         <bar01 :chartdata="chartdatabar"
                :key="reloadbar" />
       </div>
@@ -33,6 +34,7 @@ export default {
   },
   data () {
     return {
+      loading: true,
       townid: "",
       chartdatabar: {
         name: "党员发展柱状图",
@@ -48,6 +50,7 @@ export default {
       this.getChartDatabyTownid()
     },
     getChartDatabyTownid () {
+      this.loading = true;
       get_villages({
         join: "town",
         fields: "id",
@@ -83,6 +86,7 @@ export default {
             });
             this.$set(this.chartdatabar, "seriesdata", data)
             this.reloadbar = (new Date()).getTime()
+            this.loading = false;
           })
       })
     }

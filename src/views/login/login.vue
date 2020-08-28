@@ -1,51 +1,36 @@
 <template>
-  <div>
-    <div class="loginbox">
-      <el-row>
-        <el-col :span="12"
-                :offset="8">
-          <div class="loginform">
-            <h1>郑州市惠济区村务监督平台</h1>
-            <el-form :model="form">
-              <el-form-item>
-                <el-input v-model="form.usernum"
-                          placeholder="请输入账号"
-                          clearable
-                          prefix-icon="el-icon-user"
-                          type="text"></el-input>
-              </el-form-item>
-              <el-form-item>
-                <el-input v-model="form.pas"
-                          clearable
-                          placeholder="请输入密码"
-                          prefix-icon="el-icon-key"
-                          type="password"></el-input>
-              </el-form-item>
-              <el-form-item>
-                <el-switch v-model="form.remember"></el-switch>
-                <span>记住我</span>
-              </el-form-item>
-              <br>
-              <el-form-item>
-                <el-button type="primary"
-                           class="loginbutton"
-                           @click="onSubmit">登录</el-button>
-              </el-form-item>
-            </el-form>
-          </div>
-        </el-col>
-      </el-row>
+  <div class="loginbox">
+
+    <div class="loginform">
+      <h1>惠济区村(居)务监督平台</h1>
+      <el-form :model="form">
+        <el-form-item>
+          <el-input v-model="form.usernum"
+                    placeholder="请输入账号"
+                    clearable
+                    prefix-icon="el-icon-user"
+                    type="text"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-input v-model="form.pas"
+                    clearable
+                    placeholder="请输入密码"
+                    prefix-icon="el-icon-key"
+                    type="password"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-switch v-model="form.remember"></el-switch>
+          <span>记住我</span>
+        </el-form-item>
+        <br>
+        <el-form-item>
+          <el-button type="primary"
+                     class="loginbutton"
+                     @click="onSubmit">登录</el-button>
+        </el-form-item>
+      </el-form>
     </div>
-    <el-row>
-      <el-col :span="12">
-        <div class="login login-left">
-        </div>
-      </el-col>
-      <el-col :span="12">
-        <div class="login login-right">
-        </div>
-      </el-col>
-    </el-row>
+
   </div>
 </template>
 
@@ -89,10 +74,13 @@ export default {
             localStorage.remember = true
           }
           console.log(res);
+          // fktownid
           this.$store.commit("set_level", res.level)
+          this.$store.commit("set_leaderlevel", res.level)
           this.$store.commit("set_id", res.id)
           this.$store.commit("set_name", res.name)
-          this.$store.commit("set_townid", res.town === null ? 6 : res.town.id)
+          this.$store.commit("set_townid", res.town === null ? 6 : res.town.id);
+          this.$store.commit("set_fktownid", res.town === null ? 6 : res.town.id);
           this.$store.commit("set_townname", res.town === null ? "刘寨街道" : res.town.name)
           this.$store.commit("set_areaid", res.area.id)
           this.$store.commit("set_areaname", res.area.name)
@@ -105,34 +93,30 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.login {
-  height: 100vh;
-}
-.login-left {
-  background-image: url("~assets/imgs/lotus3.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-}
-.login-right {
-  background-color: @mainColorfade1;
-}
 .loginbox {
-  .center();
-  h1 {
-    .textcenter();
-  }
-  z-index: @index10;
+  width: 100vw;
+  height: 100vh;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: url("~assets/imgs/bk.jpg");
   .loginform {
     // width: 100%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
     max-width: 900px;
-    width: 33vw;
-    height: 500px;
+    width: 38vw;
     background-color: #fff;
-    padding: 15px;
-    padding-top: 30px;
+    padding: 30px 15px;
+    box-shadow: 0px 0px 20px #cccccc;
+    h1 {
+      text-align: center;
+    }
   }
 }
+
 .el-form {
   max-width: 420px;
   margin: 30px auto;

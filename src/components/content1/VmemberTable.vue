@@ -22,9 +22,8 @@
                            width="60">
           </el-table-column>
           <el-table-column prop="phone"
-                           sortable
                            label="联系方式"
-                           width="120">
+                           width="160">
           </el-table-column>
           <el-table-column prop="duties"
                            label="职位"
@@ -54,7 +53,7 @@
             <template slot-scope="scope">
               <el-button @click="handleClick(scope.row)"
                          type="text"
-                         size=" medium">查看照片</el-button>
+                         size="medium">照片</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -75,12 +74,13 @@
          @click="hidenMask"
          v-show="showcard">
       <div class="centerbody">
-        <slot name="centerbody">
-          <el-image v-for="(file,index) in itemdata.image"
-                    :key="'file'+index"
-                    :src="file.url"
-                    lazy></el-image>
-        </slot>
+        <div class="cardcontent">
+          <img :src="itemdata.img"
+               alt=""
+               style="width:300px;margin:0 auto;"
+               srcset="">
+        </div>
+
       </div>
     </div>
   </div>
@@ -149,12 +149,11 @@ export default {
           this.total = res.total
           this.tableData.splice(0)
           this.tableData = res.data.map((data, index) => {
-            // image: [{…}]
-            let img
-            if (data.image != null && (typeof data.image) != "object") {
-              img = data.image.map(file => {
-                return file.url
-              })
+            let img = null;
+            if (data.image != null) {
+              if (data.image.length > 0) {
+                img = data.image[0].url
+              }
             }
             return {
               id: data.id,
@@ -173,12 +172,10 @@ export default {
         })
     },
     villageSearch (villageid) {
-      console.log(villageid);
       this.villageid = villageid
       this.get_tableData(villageid)
     },
     handleClick (scope) {
-      console.log(scope.index);
       this.itemdata = this.tableData[Number(scope.index)]
       this.showcard = true
     },

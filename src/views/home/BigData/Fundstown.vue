@@ -6,13 +6,15 @@
     <div slot="body">
       <div class="flexbox">
         <div class="flexsize2">
-          <div style="height:400px;">
+          <div v-loading="loading"
+               style="height:400px;">
             <bar01 :name="name"
                    :source="source"
                    :key="reloadbar" />
           </div>
         </div>
-        <div class="flexsize1">
+        <div v-loading="loading"
+             class="flexsize1">
           <div style="height:400px;">
             <pie01 :pie02data="pie02data"
                    :key="reloadpie" />
@@ -44,6 +46,7 @@ export default {
   },
   data () {
     return {
+      loading: true,
       townid: "",
       theyear: "",
       source: [
@@ -71,6 +74,7 @@ export default {
       this.getChartDatabyTownid()
     },
     getChartDatabyTownid () {
+      this.loading = true;
       get_villages({
         join: "town",
         fields: "id,name",
@@ -119,10 +123,11 @@ export default {
               allsr += (sr / 10000)
               allzc += (zc / 10000)
             });
-            this.$set(this.pie02data, "data", [{ value: allsr.toFixed(2), name: "收入" }, { value: allzc.toFixed(2), name: "支出" }])
+            this.$set(this.pie02data, "data", [{ value: allsr.toFixed(2), name: "收入" }, { value: allzc.toFixed(2), name: "支出" }]);
 
-            this.reloadbar = (new Date()).getTime()
-            this.reloadpie = (new Date()).getTime()
+            this.reloadbar = (new Date()).getTime();
+            this.reloadpie = (new Date()).getTime();
+            this.loading = false;
 
           })
       })

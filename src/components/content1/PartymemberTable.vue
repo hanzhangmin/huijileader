@@ -19,7 +19,7 @@
 
           <el-table-column prop="phone"
                            label="联系方式"
-                           width="100">
+                           width="140">
           </el-table-column>
           <el-table-column prop="address"
                            label="地址"
@@ -28,17 +28,17 @@
           <el-table-column prop="periodOfActivists"
                            sortable
                            label="成为积极分子"
-                           width="140">
+                           width="160">
           </el-table-column>
           <el-table-column prop="periodOfDevelopmentObject"
                            sortable
                            label="成为发展对象"
-                           width="140">
+                           width="160">
           </el-table-column>
           <el-table-column prop="periodOfProbationaryMember"
                            sortable
                            label="成为预备党员"
-                           width="140">
+                           width="160">
           </el-table-column>
           <el-table-column prop="periodOfPartyMember"
                            sortable
@@ -81,7 +81,7 @@
         </el-pagination>
       </div>
     </BaseCard>
-    <div class="mask"
+    <!-- <div class="mask"
          @click="hidenMask"
          v-show="showcard">
       <div class="centerbody">
@@ -103,7 +103,7 @@
           </BaseCard2>
         </slot>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
@@ -128,7 +128,7 @@ export default {
       pageCount: 1,
       total: 0,
       tableData: [],
-      itemdata: {},
+      // itemdata: {},
       loading: true,
       showcard: false,
       villageid: "",
@@ -145,7 +145,7 @@ export default {
       s["village.id"] = { "$eq": Number(this.villageid) }
 
       if (this.type != "0") {
-        s["status.id"] = { "$eq": Number(this.type) }
+        s["status.id"] = { "$eq": this.type }
         join = "village,status"
       }
       get_party_members({
@@ -191,11 +191,11 @@ export default {
       this.type = type
       this.get_tableData()
     },
-    handleClick (scope) {
-      console.log(scope.index);
-      this.itemdata = this.tableData[Number(scope.index)]
-      this.showcard = true
-    },
+    // handleClick (scope) {
+    //   console.log(scope.index);
+    //   this.itemdata = this.tableData[Number(scope.index)]
+    //   this.showcard = true
+    // },
     handleSizeChange (val) {
       this.pageSize = Number(val)
       this.page = 1

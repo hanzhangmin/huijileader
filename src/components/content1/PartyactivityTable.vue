@@ -23,7 +23,7 @@
           <el-table-column prop="time"
                            sortable
                            label="时间"
-                           width="100">
+                           width="120">
           </el-table-column>
           <el-table-column prop="location"
                            label="地点"
@@ -69,11 +69,20 @@
             </div>
             <div slot="body">
               <div class="cardcontent">
-                活动内容 <span>{{itemdata.content}}</span>
-                <el-image v-for="url in itemdata.img"
-                          :key="url"
-                          :src="url"
-                          lazy></el-image>
+                活动内容： <span>{{itemdata.content}}</span>
+              </div>
+              <div class="cardcontent">
+                活动图片：
+                <viewer :images="itemdata.img">
+                  <!-- //photo 一定要一个数组，否则报错 -->
+                  <div class="img"
+                       v-for="(src,index) in itemdata.img"
+                       :key="index">
+                    <img :src="src"
+                         :onerror="errorImg">
+                  </div>
+                </viewer>
+
               </div>
             </div>
           </BaseCard2>
@@ -104,7 +113,9 @@ export default {
       pageCount: 1,
       total: 0,
       tableData: [],
-      itemdata: {},
+      itemdata: {
+        img: []
+      },
       loading: true,
       showcard: false,
       villageid: "",
@@ -123,6 +134,7 @@ export default {
         limit: this.pageSize,
         page: this.currentPage,
         join: "village,type",
+        sort: "time,DESC",
         s: {
           "village.id": {
             "$eq": Number(this.villageid)
@@ -140,14 +152,14 @@ export default {
           this.loading = false
           // this.currentPage = res.pageCount
           this.total = res.total
-          this.tableData.splice(0)
+          this.tableData.splice(0);
           this.tableData = res.data.map((data, index) => {
             // image: [{…}]
-            let img
-            if (data.relatedDocuments != null && (typeof data.relatedDocuments) != "object") {
-              img = data.relatedDocuments.map(file => {
-                return file.url
-              })
+            let img = [];
+            if (data.relatedDocuments != null) {
+              data.relatedDocuments.forEach(element => {
+                img.push(element.url)
+              });
             }
             return {
               id: data.id,
@@ -160,6 +172,7 @@ export default {
               img: img,
             }
           })
+          console.log(this.tableData);
         })
     },
     villageSearch (villageid, type, time1, time2) {
@@ -170,8 +183,9 @@ export default {
       this.get_tableData()
     },
     handleClick (scope) {
-      console.log(scope.index);
-      this.itemdata = this.tableData[Number(scope.index)]
+      // console.log(scope.index);
+      this.itemdata = this.tableData[Number(scope.index)];
+      console.log(this.itemdata);
       this.showcard = true
     },
     handleSizeChange (val) {

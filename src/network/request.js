@@ -291,23 +291,11 @@ export function get_village_action(cid, fields) {
     })
 }
 // 获取项目建设信息
-export function get_project_constractions(vid, pageSize, page, fields) {
+export function get_project_constractions(params) {
     return newrequest({
-        url: `project-construction`,
+        url: `project-construction/${geturl(params)}`,
         method: "GET",
         dataType: "JSON",
-        params: {
-            // fields: fields,
-            limit: pageSize,
-            page: page,
-            join: "village",
-            s: {
-                "village.id": {
-                    "$eq": Number(vid)
-                }
-            },
-            // sort: "createdAt,ASC"
-        }
     })
 }
 
@@ -738,7 +726,25 @@ export function patch_villager(cid, formdata) {
         }
     })
 }
+export function get_user(cid) {
+    return newrequest({
+        url: `user/${cid}`,
+        method: "GET",
+        dataType: "JSON",
+    })
+}
 
+export function patch_user(cid, formdata) {
+    console.log(formdata);
+    return newrequest({
+        url: `user/${cid}`,
+        method: "PATCH",
+        dataType: "JSON",
+        data: {
+            ...formdata
+        }
+    })
+}
 
 // 上传图片
 export function post_file(file) {

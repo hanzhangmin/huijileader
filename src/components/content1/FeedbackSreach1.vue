@@ -1,57 +1,65 @@
 <template>
-  <div>
-    {{areaname}}:
-    <el-select v-if="$store.state.level!=0"
-               disabled
-               v-model="townid"
-               :size="size"
-               placeholder="请选择镇/街道">
-      <el-option v-for="item in towns"
-                 :key="'town'+item.id"
-                 :label="item.name"
-                 :value="item.id">
-      </el-option>
-    </el-select>
-    <el-select v-else
-               v-model="townid"
-               :size="size"
-               placeholder="请选择镇/街道">
-      <!-- <el-option label="全区"
+  <div class="searchbox">
+    <div class="searchobj">
+      <label for="">
+        {{areaname}}:
+        <el-select v-if="$store.state.level!=0"
+                   disabled
+                   v-model="townid"
+                   :size="size"
+                   placeholder="请选择镇/街道">
+          <el-option v-for="item in towns"
+                     :key="'town'+item.id"
+                     :label="item.name"
+                     :value="item.id">
+          </el-option>
+        </el-select>
+        <el-select v-else
+                   v-model="townid"
+                   :size="size"
+                   placeholder="请选择镇/街道">
+          <el-option v-for="item in towns"
+                     :key="'town'+item.id"
+                     :label="item.name"
+                     :value="item.id">
+          </el-option>
+        </el-select>
+      </label>
+      <label for="">
+        村：
+        <el-select v-model="villageid"
+                   :size="size"
+                   placeholder="请选择行政村">
+          <!-- <el-option label="全镇/街道"
                  value="0">
       </el-option> -->
-      <el-option v-for="item in towns"
-                 :key="'town'+item.id"
-                 :label="item.name"
-                 :value="item.id">
-      </el-option>
-    </el-select>
-    <el-select v-model="villageid"
-               :size="size"
-               placeholder="请选择行政村">
-      <!-- <el-option label="全镇/街道"
-                 value="0">
-      </el-option> -->
-      <el-option v-for="item in villages"
-                 :key="'village'+item.id"
-                 :label="item.name"
-                 :value="item.id">
-      </el-option>
-    </el-select>
-
-    <el-date-picker :size="size"
-                    v-model="time"
-                    type="monthrange"
-                    align="right"
-                    unlink-panels
-                    range-separator="至"
-                    start-placeholder="开始月份"
-                    end-placeholder="结束月份"
-                    :picker-options="pickerOptions"
-                    change="changetime">
-    </el-date-picker>
-    <el-button type="primary"
-               :size="size"
-               @click="onSubmit">搜索</el-button>
+          <el-option v-for="item in villages"
+                     :key="'village'+item.id"
+                     :label="item.name"
+                     :value="item.id">
+          </el-option>
+        </el-select>
+      </label>
+      <label for="">
+        时间段：
+        <el-date-picker :size="size"
+                        v-model="time"
+                        type="monthrange"
+                        align="right"
+                        unlink-panels
+                        range-separator="至"
+                        start-placeholder="开始月份"
+                        end-placeholder="结束月份"
+                        :picker-options="pickerOptions"
+                        change="changetime">
+        </el-date-picker>
+      </label>
+    </div>
+    <div>
+      <el-button type="primary"
+                 :size="size"
+                 @click="onSubmit">搜索</el-button>
+    </div>
   </div>
 
 </template>
@@ -102,7 +110,17 @@ export default {
               start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
               picker.$emit('pick', [start, end]);
             }
-          }, {
+          },
+          {
+            text: '最近半年',
+            onClick (picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30 * 6);
+              picker.$emit('pick', [start, end]);
+            }
+          },
+          {
             text: '最近一年',
             onClick (picker) {
               const end = new Date();
@@ -110,8 +128,13 @@ export default {
               start.setTime(start.getTime() - 3600 * 1000 * 24 * 365);
               picker.$emit('pick', [start, end]);
             }
-          }]
+          }],
+        disabledDate (time) {
+          let _now = Date.now();
+          return time.getTime() >= _now;
+        }
       },
+
     }
   },
   computed: {

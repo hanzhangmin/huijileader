@@ -39,8 +39,16 @@ export default {
       myChart.showLoading();
       let vm = this
       myChart.setOption({
-        title: { text: vm.name },
-        legend: {},
+        title: {
+          top: "0%",
+          left: "3%",
+          text: vm.name,
+        },
+        legend: {
+          top: "6%",
+          right: "0%"
+          // orient: 'vertical',
+        },
         tooltip: {
           trigger: 'axis',
           axisPointer: {
@@ -60,10 +68,36 @@ export default {
           // ]
           source: vm.source
         },
-        xAxis: { type: 'category' },
+        xAxis: {
+          type: 'category',
+          axisLine: {
+            lineStyle: {
+              color: '#999',
+            }
+          },
+          axisTick: {
+            lineStyle: {
+              color: '#999',
+            }
+          },
+          //网格线
+          splitLine: {
+            show: true,
+          },
+        },
         yAxis: {
           name: "条",
-          splitNumber: 1
+          splitNumber: 1,
+          axisLine: {
+            lineStyle: {
+              color: '#999',
+            }
+          },
+          axisTick: {
+            lineStyle: {
+              color: '#999',
+            }
+          },
         },
         series: [
           { type: 'bar' },

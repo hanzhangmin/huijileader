@@ -1,10 +1,12 @@
 <template>
+
   <BaseCard2>
     <div slot="header">
       <villageSearch @villageSearch="Search" />
     </div>
     <div slot="body">
-      <div style="height:400px;">
+      <div style="height:400px;"
+           v-loading="loading">
         <bar01 :chartdata="chartdatabar"
                :key="reloadbar" />
       </div>
@@ -31,6 +33,7 @@ export default {
   },
   data () {
     return {
+      loading: true,
       villageid: "",
       reloadbar: "",
       chartdatabar: {
@@ -46,6 +49,7 @@ export default {
       this.getChartData()
     },
     getChartData () {
+      this.loading = true
       get_party_members(
         {
           fields: "status",
@@ -64,6 +68,7 @@ export default {
           });
           this.$set(this.chartdatabar, "seriesdata", data)
           this.reloadbar = (new Date()).getTime()
+          this.loading = false
         })
         .catch(err => {
           console.log(err);

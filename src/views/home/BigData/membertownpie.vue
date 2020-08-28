@@ -4,7 +4,8 @@
       <TownSearch @villageSearch="TownSearch" />
     </div>
     <div slot="body">
-      <div style="height:400px;">
+      <div style="height:400px;"
+           v-loading="loading">
         <pie01 :key="reloadpie01"
                :pie01data="pie01data" />
       </div>
@@ -18,7 +19,7 @@ import BaseCard2 from "components/commen1/BaseCard2"
 // import villageSearch from 'components/content1/VillageSearch'
 import TownSearch from 'components/content1/TownSearch'
 // import bar01 from 'views/echartsExamples/bar_01'
-import pie01 from 'views/echartsExamples/pie_01'
+import pie01 from 'views/echartsExamples/pie_03'
 import membervillage from './membervillage'
 export default {
   name: "membertownpie",
@@ -30,6 +31,7 @@ export default {
   },
   data () {
     return {
+      loading: true,
       townid: "",
       pie01data: {
         name: "党员发展类型占比图",
@@ -44,6 +46,7 @@ export default {
       this.getChartDatabyTownidpie()
     },
     getChartDatabyTownidpie () {
+      this.loading = true;
       get_villages({
         join: "town",
         fields: "id",
@@ -83,7 +86,7 @@ export default {
             });
             this.$set(this.pie01data, "data", data)
             this.reloadpie01 = (new Date()).getTime()
-            console.log(this.pie01data);
+            this.loading = false
           })
       })
     },

@@ -93,7 +93,7 @@ canvas {
 .cardcontent {
   margin: 10px 0px;
   font-size: @fontsize16;
-  max-width: 600px;
+  // width: 60vw;
 
   p {
     margin-bottom: 10px;
@@ -105,6 +105,11 @@ canvas {
     transition: all 0.3s linear;
   }
 
+  img {
+    width: 100%;
+    height: auto;
+    text-align: center;
+  }
 }
 
 .mycharts {
@@ -149,22 +154,23 @@ i::before {
   color: #cccccc;
 }
 
-.el-select {
-  width: 140px;
-  margin-right: 10px;
-}
 
-.el-select:nth-child(4),
-.el-select:nth-child(3) {
-  width: 130px;
-}
 
 .el-input__icon {
   display: none;
 }
 
-.el-range-editor--mini {
+.el-input__inner {
+  background-color: rgba(255, 255, 255, 0.4) !important;
+}
+
+.el-range-separator {
+  padding: 0px 30px !important;
+}
+
+.el-select {
   margin-right: 10px;
+  width: 160px !important;
 }
 
 .el-table__row td .cell {
@@ -175,6 +181,23 @@ i::before {
 /* .el-menu-item .is-active {
   background-color: rgba(0, 0, 0, 0.2) !important;
 } */
+.searchbox {
+  display: flex;
+  line-height: 46px;
+
+  .searchobj {
+    // white-space: nowrap;
+    // overflow-x: auto;
+    overflow-y: hidden;
+
+    // flex: auto;
+    margin-right: 20px;
+    // padding-bottom: 10px;
+  }
+
+}
+
+
 
 .mask {
   position: fixed;
@@ -187,16 +210,21 @@ i::before {
 }
 
 .centerbody {
-  position: fixed;
-  left: 0px;
-  top: 0px;
-  min-width: 600px;
-  transform: translate(50%, 50%);
+  position: relative;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  max-height: 90vh;
+  overflow-y: scroll;
+  width: 60vw;
+  max-width: 1200px;
+  background-color: #ffffff;
+  padding: 20px 0px 20px 20px;
 }
 
 // color: ["#224abe", "#9bb4ff"]
 .yes {
-  color: #00b80f;
+  color: #007a0a;
 }
 
 .no {
@@ -206,19 +234,10 @@ i::before {
 a {
   text-decoration: none;
   transition: all 0.3s linear;
-  padding: 6px;
-  border-radius: 4px;
+  // padding: 6px;
+  // border-radius: 4px;
 }
 
-a:hover {
-
-  background-color: @mainColor;
-
-  span {
-    color: #ffffff !important;
-
-  }
-}
 
 .center {
   position: absolute;
@@ -250,6 +269,7 @@ a:hover {
   color: @errorColor;
   background-color: @nobkColor ;
 }
+
 
 
 each(@fitmobile, {
@@ -317,7 +337,7 @@ body {
 * {
   padding: 0;
   margin: 0;
-  font-family: "楷体";
+  // font-family: "楷体";
   box-sizing: border-box;
   // color: #888888;
 }
@@ -332,3 +352,37 @@ body {
 [v-cloak] {
   display: none;
 }
+
+
+.img {
+  display: inline-block;
+  width: 300px;
+  height: 300px;
+  margin: 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.img:hover {
+  transform: scale(1.02);
+  box-shadow: 0px 0px 4px #cccccc;
+}
+
+.img img {
+  width: 600px;
+  height: auto;
+  position: relative;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+label {
+  white-space: nowrap
+}
+
+// .el-table td,
+// .el-table th {
+//   text-align: center !important;
+// }

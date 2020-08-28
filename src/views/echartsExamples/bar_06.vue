@@ -54,10 +54,36 @@ export default {
           // ]
           source: vm.source
         },
-        xAxis: { type: 'category' },
+        xAxis: {
+          type: 'category',
+          axisLine: {
+            lineStyle: {
+              color: '#999',
+            }
+          },
+          axisTick: {
+            lineStyle: {
+              color: '#999',
+            }
+          },
+          //网格线
+          splitLine: {
+            show: true,
+          },
+        },
         yAxis: {
           name: vm.name1,
-          splitNumber: 1
+          splitNumber: 1,
+          axisLine: {
+            lineStyle: {
+              color: '#999',
+            }
+          },
+          axisTick: {
+            lineStyle: {
+              color: '#999',
+            }
+          },
         },
         series: [
           { type: 'bar' },

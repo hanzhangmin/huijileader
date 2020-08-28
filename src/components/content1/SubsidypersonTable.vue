@@ -80,16 +80,32 @@
         <slot name="centerbody">
           <BaseCard2>
             <div slot="header">
-              {{itemdata.name}}
-              <span class="littlespan">性别：{{itemdata.sex}}</span>
-              <span class="littlespan">联系方式：{{itemdata.phone}}</span>
-              <span class="littlespan">地址：{{itemdata.address}}</span>
+              补助对象
             </div>
             <div slot="body">
+
+              <div class="cardcontent">
+                姓名： <span>{{itemdata.name}}</span>
+              </div>
+              <div class="cardcontent">
+                性别： <span>{{itemdata.sex}}</span>
+              </div>
+              <div class="cardcontent">
+                联系方式： <span>{{itemdata.phone}}</span>
+              </div>
+              <div class="cardcontent">
+                地址： <span>{{itemdata.address}}</span>
+              </div>
               <div class="cardcontent">
                 补助原因： <span>{{itemdata.cause}}</span>
-                补助项：<span>{{itemdata.subsidyName}}</span>
+              </div>
+              <div class="cardcontent">
+                补助项： <span>{{itemdata.subsidyName}}</span>
+              </div>
+              <div class="cardcontent">
                 补助金额： <span>{{itemdata.subsidyAmount}}</span>
+              </div>
+              <div class="cardcontent">
                 补助物品：<span>{{itemdata.subsidyItems}}</span>
               </div>
               <div class="cardcontent">
@@ -147,6 +163,7 @@ export default {
         limit: this.pageSize,
         page: this.currentPage,
         join: "village,subsidy",
+        sort: "applicationTime,DESC",
         s: {
           "village.id": {
             "$eq": Number(this.villageid)

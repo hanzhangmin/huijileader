@@ -5,7 +5,8 @@
         <villageSearch @villageSearch="Search" />
       </div>
       <div slot="body">
-        <div style="height:400px;">
+        <div style="height:400px;"
+             v-loading="loading">
           <line02 :key="reload"
                   :ChartData="ChartData"></line02>
         </div>
@@ -36,6 +37,7 @@ export default {
   },
   data () {
     return {
+      loading: true,
       villageid: "",
       reload: "",
       ChartData: {
@@ -50,6 +52,7 @@ export default {
       this.getChartData()
     },
     getChartData () {
+      this.loading = true
       get_funds(
         {
           fields: "input,output,time",
@@ -63,7 +66,7 @@ export default {
         }
       )
         .then(res => {
-
+          console.log(res);
           let xAxisData = [], sr = [], zc = []
           res.forEach(element => {
             xAxisData.push(element.time)
@@ -75,6 +78,7 @@ export default {
           this.$set(this.ChartData, "zc", zc)
 
           this.reload = (new Date()).getTime()
+          this.loading = false
         })
         .catch(err => {
           this.$set(this.ChartData, "xAxisData", [])

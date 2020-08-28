@@ -61,15 +61,28 @@
           <BaseCard2>
             <div slot="header">
               {{itemdata.name}}迁移信息
-              <span class="littlespan">迁移时间{{itemdata.time}}</span>
+
             </div>
             <div slot="body">
               <div class="cardcontent">
-                迁移地点 <span>{{itemdata.location}}</span>
-                <el-image v-for="url in itemdata.img"
-                          :key="url"
-                          :src="url"
-                          lazy></el-image>
+                迁移时间： <span>{{itemdata.time}}</span>
+              </div>
+              <div class="cardcontent">
+                迁移地： <span>{{itemdata.location}}</span>
+              </div>
+              <div class="cardcontent">
+                相关图片：
+                <viewer v-if="itemdata.img.length>0"
+                        :images="itemdata.img">
+
+                  <div class="img"
+                       v-for="(src,index) in itemdata.img"
+                       :key="index">
+                    <img :src="src"
+                         :onerror="errorImg">
+                  </div>
+                </viewer>
+                <span v-else>无</span>
               </div>
             </div>
           </BaseCard2>
@@ -100,7 +113,9 @@ export default {
       pageCount: 1,
       total: 0,
       tableData: [],
-      itemdata: {},
+      itemdata: {
+        img: []
+      },
       loading: true,
       showcard: false,
       villageid: "",
@@ -127,6 +142,7 @@ export default {
         limit: this.pageSize,
         page: this.currentPage,
         join: "village",
+        sort: "migrationTime,DESC",
         s
       })
         .then(res => {
@@ -137,11 +153,14 @@ export default {
           this.tableData.splice(0)
           this.tableData = res.data.map((data, index) => {
             // image: [{…}]
-            let img
-            if (data.relatedDocuments != null && (typeof data.relatedDocuments) != "object") {
-              img = data.relatedDocuments.map(file => {
-                return file.url
-              })
+            let img = [];
+            if (data.relatedDocuments != null) {
+              // img = data.relatedDocuments.map(file => {
+              //   return file.url
+              // })
+              data.relatedDocuments.forEach(element => {
+                img.push(element.url);
+              });
             }
             address: null
             return {
@@ -166,7 +185,7 @@ export default {
     handleClick (scope) {
       console.log(scope.index);
       this.itemdata = this.tableData[Number(scope.index)]
-      this.showcard = true
+      this.showcard = true;
     },
     handleSizeChange (val) {
       this.pageSize = Number(val)

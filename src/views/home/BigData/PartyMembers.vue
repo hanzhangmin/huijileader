@@ -2,7 +2,15 @@
 
 <template>
   <div>
-    <membervillage />
+    <div class="flexbox">
+      <div class="flexsize1">
+        <membertype />
+
+      </div>
+      <div class="flexsize1">
+        <membervillage />
+      </div>
+    </div>
     <div class="flexbox">
       <div class="flexsize1">
         <membertownpie />
@@ -11,7 +19,6 @@
         <membertownbar />
       </div>
     </div>
-    <membertype />
     <!-- <memberArea /> -->
   </div>
 </template>

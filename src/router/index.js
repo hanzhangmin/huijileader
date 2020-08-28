@@ -27,6 +27,8 @@ const fund = () =>
     // 资源
 const resource = () =>
     import ("views/home/finance/Resource.vue")
+const project = () =>
+    import ("views/home/finance/Project.vue")
     // 党务
 const Party = () =>
     import ("views/home/party/party.vue")
@@ -75,6 +77,11 @@ const DataPartyMembers = () =>
     import ("views/home/BigData/PartyMembers.vue")
 const DataSuggestions = () =>
     import ("views/home/BigData/Suggestions.vue")
+
+const Profile = () =>
+    import ("views/home/profile/profile.vue")
+const updata = () =>
+    import ("views/home/profile/updataintro.vue")
 const routes = [{
         path: '',
         redirect: "/login",
@@ -124,6 +131,10 @@ const routes = [{
                         path: "resource",
                         component: resource,
                     },
+                    {
+                        path: "project",
+                        component: project
+                    }
                 ]
             },
             {
@@ -197,6 +208,14 @@ const routes = [{
                     },
                 ]
             },
+            {
+                path: "profile",
+                component: Profile,
+                children: [{
+                    path: "updata",
+                    component: updata
+                }]
+            }
         ]
     },
     {
@@ -208,5 +227,9 @@ const router = new vueRouter({
     routes,
 })
 
-
+router.beforeEach((to, from, next) => {
+    console.log("导航守卫");
+    // console.log(window.history.state.key);
+    next();
+})
 export default router

@@ -44,25 +44,37 @@ export default {
           type: 'category',
           data: this.ChartData.xAxisData,
           axisLine: {
-            show: true
+            lineStyle: {
+              color: '#999',
+            }
           },
           axisTick: {
-            show: true
+            lineStyle: {
+              color: '#999',
+            }
+          },
+          //网格线
+          splitLine: {
+            show: true,
           },
         },
         yAxis: {
-          splitLine: { show: false },//去除网格线
+          splitLine: { show: true },//去除网格线
           axisLine: {
-            show: false
+            lineStyle: {
+              color: '#999',
+            }
           },
           axisTick: {
-            show: false
+            lineStyle: {
+              color: '#999',
+            }
           },
           name: "元",
           type: 'value',
         },
         dataZoom: {
-          start: 95,
+          start: 98,
           end: 100,
           // fillerColor: "#224abe",
           // handleStyle: {

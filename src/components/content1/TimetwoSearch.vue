@@ -48,8 +48,14 @@ export default {
             start.setMonth(start.getMonth() - 6);
             picker.$emit('pick', [start, end]);
           }
-        }]
+        }
+        ],
+        disabledDate (time) {
+          let _now = Date.now();
+          return time.getTime() >= _now;
+        }
       },
+
     }
   },
   computed: {

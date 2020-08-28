@@ -6,14 +6,16 @@
     <div slot="body">
       <div class="flexbox">
         <div class="flexsize2">
-          <div style="height:400px;">
+          <div style="height:400px;"
+               v-loading="loading">
             <bar01 :name="name"
                    :source="source"
                    :key="reloadbar" />
           </div>
         </div>
         <div class="flexsize1">
-          <div style="height:400px;">
+          <div style="height:400px;"
+               v-loading="loading">
             <pie01 :pie02data="pie02data"
                    :key="reloadpie" />
           </div>
@@ -44,6 +46,7 @@ export default {
   },
   data () {
     return {
+      loading: true,
       townid: "",
       theyear: "",
       source: [
@@ -70,6 +73,7 @@ export default {
       this.getChartDatabyTownid()
     },
     getChartDatabyTownid () {
+      this.loading = true
       get_bigdata_funds_data(this.theyear)
         .then(res => {
           console.log(res);
@@ -91,6 +95,7 @@ export default {
           console.log(this.source);
           this.reloadbar = (new Date()).getTime()
           this.reloadpie = (new Date()).getTime()
+          this.loading = false
         })
     }
   },

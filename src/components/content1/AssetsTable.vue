@@ -15,7 +15,7 @@
           <el-table-column fixed
                            prop="name"
                            label="资产"
-                           width="300">
+                           width="200">
           </el-table-column>
           <el-table-column label="非经营表">
             <el-table-column prop="quantity"
@@ -24,11 +24,11 @@
             </el-table-column>
             <el-table-column prop="unitOfMeasurement"
                              label="单位"
-                             width="auto">
+                             width="80">
             </el-table-column>
             <el-table-column prop="unitPrice"
                              label="单价(元)"
-                             width="auto">
+                             width="100">
             </el-table-column>
             <el-table-column prop="brand"
                              label="品牌"
@@ -40,28 +40,28 @@
             </el-table-column>
 
             <el-table-column prop="presentValue"
-                             label="现今价值"
-                             width="auto">
+                             label="现今价值(元)"
+                             width="120">
             </el-table-column>
             <el-table-column prop="estimatedYears"
                              label="预计年限"
-                             width="auto">
+                             width="100">
             </el-table-column>
             <el-table-column prop="creationTime"
                              label="构建时间"
-                             width="100">
+                             width="120">
             </el-table-column>
             <el-table-column prop="source"
                              label="产品来源"
-                             width="auto">
+                             width="120">
             </el-table-column>
             <el-table-column prop="changes"
                              label="变动情况"
-                             width="auto">
+                             width="120">
             </el-table-column>
             <el-table-column prop="productStatus"
                              label="产品状态"
-                             width="auto">
+                             width="120">
             </el-table-column>
             <el-table-column prop="useDepartmentsAndUser"
                              label="使用部门及使用者"
@@ -69,22 +69,22 @@
             </el-table-column>
             <el-table-column prop="remarks"
                              label="备注"
-                             width="auto">
+                             width="200">
             </el-table-column>
           </el-table-column>
 
           <el-table-column label="经营表">
             <el-table-column prop="amount"
                              label="合同金额"
-                             width="auto">
+                             width="120">
             </el-table-column>
             <el-table-column prop="contractSigned"
                              label="是否签订合同"
-                             width="auto">
+                             width="160">
             </el-table-column>
             <el-table-column prop="contractStatus"
                              label="合同状态"
-                             width="auto">
+                             width="120">
             </el-table-column>
             <el-table-column prop="durationOfCooperation"
                              label="合同期限"
@@ -111,7 +111,7 @@
             <template slot-scope="scope">
               <el-button @click="handleClick(scope.row)"
                          type="text"
-                         size=" medium">查看照片</el-button>
+                         size=" medium">详情</el-button>
             </template>
           </el-table-column> -->
         </el-table>
@@ -132,12 +132,8 @@
          @click="hidenMask"
          v-show="showcard">
       <div class="centerbody">
-        <slot name="centerbody">
-          <el-image v-for="(file,index) in itemdata.image"
-                    :key="'file'+index"
-                    :src="file.url"
-                    lazy></el-image>
-        </slot>
+        <BaseCard2>
+        </BaseCard2>
       </div>
     </div>
   </div>

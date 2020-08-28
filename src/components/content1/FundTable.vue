@@ -30,7 +30,7 @@
           <el-table-column prop="time"
                            sortable
                            label="时间"
-                           width="100">
+                           width="120">
           </el-table-column>
           <el-table-column prop="cause"
                            label="事由"
@@ -77,10 +77,23 @@
             <div slot="body">
               <div class="cardcontent">
                 活动内容 <span>{{itemdata.content}}</span>
-                <el-image v-for="url in itemdata.img"
+                <!-- <el-image v-for="url in itemdata.img"
                           :key="url"
                           :src="url"
-                          lazy></el-image>
+                          lazy></el-image> -->
+              </div>
+              <div class="cardcontent">
+                相关图片：
+                <viewer v-if="itemdata.img.length>0"
+                        :images="itemdata.img">
+                  <div class="img"
+                       v-for="(src,index) in itemdata.img"
+                       :key="index">
+                    <img :src="src"
+                         :onerror="errorImg">
+                  </div>
+                </viewer>
+                <span v-else>无</span>
               </div>
             </div>
           </BaseCard2>
@@ -111,7 +124,7 @@ export default {
       pageCount: 1,
       total: 0,
       tableData: [],
-      itemdata: {},
+      itemdata: { img: [] },
       loading: true,
       showcard: false,
       villageid: "",
@@ -141,6 +154,7 @@ export default {
         limit: this.pageSize,
         page: this.currentPage,
         join: "village",
+        sort: "time,DESC",
         s
       })
         .then(res => {
@@ -151,11 +165,11 @@ export default {
           this.tableData.splice(0)
           this.tableData = res.data.map((data, index) => {
             // image: [{…}]
-            let img
-            if (data.relatedDocuments != null && (typeof data.relatedDocuments) != "object") {
-              img = data.relatedDocuments.map(file => {
-                return file.url
-              })
+            let img = [];
+            if (data.relatedDocuments != null) {
+              data.relatedDocuments.forEach(element => {
+                img.push(element.url)
+              });
             }
             return {
               id: data.id,

@@ -30,6 +30,12 @@ export default {
             color: "#888888"
           }
         },
+        legend: {
+          orient: 'vertical',
+          right: 0,
+          top: 40,
+          data: vm.pie01data.legenddata,
+        },
         tooltip: {
           trigger: 'item',
           formatter: "{a} <br/>{b}: {c} ({d}%)"
@@ -80,5 +86,3 @@ export default {
   }
 }
 </script>
-<style lang="less" scoped>
-</style>

@@ -63,27 +63,40 @@ export default {
         yAxis: {
           type: 'category',
           splitLine: {
-            show: false
+            show: true
           },
           inverse: true,
           nameGap: 40,
           data: vm.chartDate.dataname,
-          scale: true,
           axisLine: {
-            show: false,
+            lineStyle: {
+              color: '#999',
+            }
           },
           axisTick: {
-            show: false
-          }
+            lineStyle: {
+              color: '#999',
+            }
+          },
         },
         xAxis: {
           type: 'value',
           name: "条",
-          nameGap: 100,
-          splitLine: {
-            show: false
+          axisLine: {
+            lineStyle: {
+              color: '#999',
+            }
           },
-          show: false
+          axisTick: {
+            lineStyle: {
+              color: '#999',
+            }
+          },
+          //网格线
+          splitLine: {
+            show: true,
+          },
+
         },
 
         series: [{
@@ -133,6 +146,8 @@ export default {
           data: vm.chartDate.data2
         }],
         color: ["#224abe", "#9bb4ff"]
+        // color: ["rgb(28,200,138)", "#e74a3b"]
+        // color: ["#50b780", "#f27277"]
       });
       myChart.hideLoading();
       myChart.on('click', function (param) {

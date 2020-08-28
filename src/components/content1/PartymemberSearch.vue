@@ -1,51 +1,60 @@
 <template>
-  <div>
-    {{areaname}}:
-    <el-select v-if="$store.state.level!=0"
-               disabled
-               v-model="townid"
-               :size="size"
-               placeholder="请选择镇/街道">
-      <el-option v-for="item in towns"
-                 :key="'town'+item.id"
-                 :label="item.name"
-                 :value="item.id">
-      </el-option>
-    </el-select>
-    <el-select v-else
-               v-model="townid"
-               :size="size"
-               placeholder="请选择镇/街道">
-      <!-- <el-option label="全区"
-                 value="0">
-      </el-option> -->
-      <el-option v-for="item in towns"
-                 :key="'town'+item.id"
-                 :label="item.name"
-                 :value="item.id">
-      </el-option>
-    </el-select>
-    <el-select v-model="villageid"
-               :size="size"
-               placeholder="请选择行政村">
-      <el-option v-for="item in villages"
-                 :key="'village'+item.id"
-                 :label="item.name"
-                 :value="item.id">
-      </el-option>
-    </el-select>
-    <el-select v-model="type"
-               :size="size"
-               placeholder="请选择类型">
-      <el-option v-for="item in types"
-                 :key="'type'+item.id"
-                 :label="item.name"
-                 :value="item.id">
-      </el-option>
-    </el-select>
-    <el-button type="primary"
-               :size="size"
-               @click="onSubmit">搜索</el-button>
+  <div class="searchbox">
+    <div class="searchobj">
+      <label for="">
+        {{areaname}}:
+        <el-select v-if="$store.state.level!=0"
+                   disabled
+                   v-model="townid"
+                   :size="size"
+                   placeholder="请选择镇/街道">
+          <el-option v-for="item in towns"
+                     :key="'town'+item.id"
+                     :label="item.name"
+                     :value="item.id">
+          </el-option>
+        </el-select>
+        <el-select v-else
+                   v-model="townid"
+                   :size="size"
+                   placeholder="请选择镇/街道">
+          <el-option v-for="item in towns"
+                     :key="'town'+item.id"
+                     :label="item.name"
+                     :value="item.id">
+          </el-option>
+        </el-select>
+      </label>
+      <label for="">
+        村：
+        <el-select v-model="villageid"
+                   :size="size"
+                   placeholder="请选择行政村">
+          <el-option v-for="item in villages"
+                     :key="'village'+item.id"
+                     :label="item.name"
+                     :value="item.id">
+          </el-option>
+        </el-select>
+      </label>
+      <label for="">
+        类型：
+        <el-select v-model="type"
+                   :size="size"
+                   placeholder="请选择类型">
+          <el-option v-for="item in types"
+                     :key="'type'+item.id"
+                     :label="item.name"
+                     :value="item.id">
+          </el-option>
+        </el-select>
+      </label>
+    </div>
+    <div>
+      <el-button type="primary"
+                 :size="size"
+                 @click="onSubmit">搜索</el-button>
+    </div>
   </div>
 
 </template>

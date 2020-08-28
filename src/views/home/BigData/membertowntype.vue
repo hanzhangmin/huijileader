@@ -4,7 +4,8 @@
       <TownSearch @villageSearch="TownSearch" />
     </div>
     <div slot="body">
-      <div style="height:400px;">
+      <div style="height:400px;"
+           v-loading="loading">
         <bar01 :name="name"
                :source="source"
                :key="reloadbar" />
@@ -31,6 +32,7 @@ export default {
   },
   data () {
     return {
+      loading: true,
       townid: "",
       source: [
         ['product', '积极分子', '发展对象', '预备党员', '正式党员'],
@@ -46,6 +48,7 @@ export default {
       this.getChartDatabyTownid()
     },
     getChartDatabyTownid () {
+      this.loading = true;
       get_villages({
         join: "town",
         fields: "id,name",
@@ -83,6 +86,7 @@ export default {
               this.source.push(data)
             });
             this.reloadbar = (new Date()).getTime()
+            this.loading = false;
           })
       })
     }

@@ -11,13 +11,15 @@
                  :pie01data="piedatatype" />
         </div> -->
           <div class="flexsize1">
-            <div style="height:400px;">
+            <div style="height:400px;"
+                 v-loading="loading">
               <pie02 :key="reloadpiepro"
                      :pie02data="piedatapro" />
             </div>
           </div>
           <div class="flexsize1">
-            <div style="height:400px;">
+            <div style="height:400px;"
+                 v-loading="loading">
               <bar01 :chartdata="chartdatabar"
                      :key="reloadbar" />
             </div>
@@ -41,6 +43,7 @@ export default {
   name: "Suggestions",
   data () {
     return {
+      loading: true,
       villageid: "",
       time: "",
       reloadpietype: "type",
@@ -81,6 +84,7 @@ export default {
       this.getChartData()
     },
     getChartData () {
+      this.loading = true
       get_feedbacks({
         fields: "type,processed",
         join: "village",
@@ -130,6 +134,7 @@ export default {
             // this.reloadpietype = (new Date()).getTime()
             this.reloadpiepro = (new Date()).getTime()
             this.reloadbar = (new Date()).getTime()
+            this.loading = false
           });
         })
     }

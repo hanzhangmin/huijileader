@@ -1,6 +1,7 @@
 <template>
+  <!-- :style="{'border-left':'4px solid'+' '+ borderColor[colorIndex]}"> -->
   <div class="cb"
-       :style="{'border-left':'4px solid'+' '+ borderColor[colorIndex]}">
+       style="border-left:4px solid rgb(46,85,199)">
     <div class="cordbody">
       <slot name="title"></slot>
     </div>
@@ -15,14 +16,17 @@ export default {
   data () {
     return {
       borderColor: [
-        "#7f2ac9", "#026341", "#01a068", "#92fcd7", "#009efc", "#2f9649", "#7f2ac9", "#0242e3", "#d8bbf5",
-        "#ffe43e", "#ff96bc"
+        "cornflowerblue",
+        "rgb(46,85,199)",
+        "#92fcd7",
+        "#7f2ac9",
+        "#0242e3",
       ]
     }
   },
   computed: {
     colorIndex () {
-      return Math.floor(Math.random() * 10);
+      return Math.floor(Math.random() * 5);
     }
   },
 }
@@ -43,6 +47,9 @@ export default {
   }
   .main {
     font-size: @fontsize16;
+  }
+  &:hover {
+    transform: translateY(-4px);
   }
 }
 </style>

@@ -5,15 +5,21 @@
     <gujia v-if="showgujia"
            :thenum="gj"></gujia> -->
     <div class="fankuisum">
-      本月全区群众意见建议总量
-      <router-link :to="{path:'/home/suggestion/sugtable',query:{type:'true'}}">
+      <h4>
+        <el-date-picker v-model="time"
+                        type="daterange"
+                        align="right"
+                        unlink-panels
+                        range-separator="至"
+                        start-placeholder="开始日期"
+                        end-placeholder="结束日期"
+                        :picker-options="pickerOptions">
+        </el-date-picker> &emsp;&emsp; &emsp;&emsp;
+        全区群众意见建议总量
         <span class="">已处理反馈：<b class="yes">{{fkycl}}</b>条</span>
-      </router-link>
-      &emsp;&emsp; &emsp;&emsp;
-      <router-link :to="{path:'/home/suggestion/sugtable',query:{type:'false'}}">
+        &emsp;&emsp; &emsp;&emsp;
         <span class="">未处理反馈：<b class="no">{{fkwcl}}</b>条</span>
-      </router-link>
-
+      </h4>
     </div>
     <div style="margin-bottom:16px;">
       <el-row :gutter="10">
@@ -27,12 +33,19 @@
             </p>
             <p slot="main"
                class="main">
-              <router-link :to="{path:'/home/suggestion/sugtable',query:{type:'true',townid:townids[index-1]}}">
-                <span class="yes">已处理：{{chartDate.data1[index-1]}}条</span>
-              </router-link>
-              <router-link :to="{path:'/home/suggestion/sugtable',query:{type:'false',townid:townids[index-1]}}">
-                <span class="no">未处理：{{chartDate.data2[index-1]}}条</span>
-              </router-link>
+              <!-- <router-link :to="{path:'/home/suggestion/sugtable',query:{type:'true',townid:townids[index-1]}}"> -->
+              <a>
+                <span class="yes"
+                      @click.stop="gofktable({type:'true',townid:townids[index-1]})">已处理：{{chartDate.data1[index-1]}}条</span>
+              </a>
+              <!-- </router-link> -->
+
+              <!-- <router-link :to="{path:'/home/suggestion/sugtable',query:{type:'false',townid:townids[index-1]}}"> -->
+              <a>
+                <span class="no"
+                      @click.stop="gofktable({type:'false',townid:townids[index-1]})">未处理：{{chartDate.data2[index-1]}}条</span>
+              </a>
+              <!-- </router-link> -->
             </p>
           </card>
         </el-col>
@@ -82,7 +95,7 @@ import gujia from 'components/commen1/gujia'
 import bar02 from '../../echartsExamples/bar_02'
 import BaseCard2 from "components/commen1/BaseCard2"
 import pie02 from 'views/echartsExamples/pie_02'
-import pie01 from 'views/echartsExamples/pie_01'
+import pie01 from 'views/echartsExamples/pie_04'
 export default {
   name: "fankuisum",
   components: {
@@ -116,25 +129,55 @@ export default {
       pie01data: {
         // name: "党员发展类型占比图",
         name2: "条",
+        legenddata: ["已处理", "未处理"]
       },
       reloadpie01: "pie01",
       fkycl: 0,
       fkwcl: 0,
       showgujia: true,
       gj: 4,
-      items: []
+      items: [],
+      time: "",
+      endtime: "",
+      pickerOptions: {
+        shortcuts: [{
+          text: '最近一个月',
+          onClick (picker) {
+            const end = new Date();
+            const start = new Date();
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+            picker.$emit('pick', [start, end]);
+          }
+        }, {
+          text: '最近半年',
+          onClick (picker) {
+            const end = new Date();
+            const start = new Date();
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30 * 6);
+            picker.$emit('pick', [start, end]);
+          }
+        }, {
+          text: '最近一年',
+          onClick (picker) {
+            const end = new Date();
+            const start = new Date();
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 365);
+            picker.$emit('pick', [start, end]);
+          }
+        }],
+        disabledDate (time) {
+          return time.getTime() > new Date().getTime()
+        }
+      },
     }
   },
-  computed: {
-    time () {
-      const end = new Date();
-      const start = new Date();
-      start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-      return [start, end]
-    }
-  },
+
   created () {
-    this.getfeedback()
+    const end = new Date();
+    this.endtime = new Date(end.getTime() + 3600 * 1000 * 24);
+    const start = new Date();
+    start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+    this.time = [start, end];
   },
   methods: {
     getfeedback () {
@@ -143,8 +186,9 @@ export default {
           join: "village,village.feedback",
           s: {
             "village.feedback.createdAt": {
-              "$between": [new Date(this.time[0]).toISOString(), new Date(this.time[1]).toISOString()],
-            }
+              "$between": [new Date(this.time[0]).toISOString(), new Date(this.endtime.toISOString())],
+            },
+            "village.feedback.deleteAt": null
           }
         }
       )
@@ -159,6 +203,8 @@ export default {
             { value: 0, name: "其他" },
           ];
           let dataname = [], data1 = [], data2 = [];
+          this.fkycl = 0;
+          this.fkwcl = 0;
           for (let townindex = 0, lentown = this.$store.state.towns.length; townindex < lentown; townindex++) {
             dataname.push(this.$store.state.towns[townindex].zhenName);
             this.townids.push(this.$store.state.towns[townindex].zhenid);
@@ -169,12 +215,12 @@ export default {
                   for (let index = 0, len = village.feedback.length; index < len; index++) {
                     if (village.feedback[index].processed) {
                       dataycl++;
-                      this.fkycl++
+                      this.fkycl++;
                     } else {
-                      datawcl++
-                      this.fkwcl++
+                      datawcl++;
+                      this.fkwcl++;
                     }
-                    piedata[village.feedback[index].type].value++
+                    piedata[village.feedback[index].type].value++;
                   }
                 });
                 data1.push(dataycl);
@@ -203,6 +249,19 @@ export default {
       // .then(res => {
       //   console.log(res);
       // })
+    },
+    gofktable (path) {
+      this.$store.commit("set_fktownid", path.townid);
+      this.$router.push({
+        path: '/home/suggestion/sugtable',
+        query: { ...path }
+      })
+    }
+  },
+  watch: {
+    time (val) {
+      console.log(val);
+      this.getfeedback()
     }
   },
 }
@@ -210,6 +269,9 @@ export default {
 <style lang="less" scoped>
 .title {
   font-size: 20px;
+}
+a {
+  cursor: pointer;
 }
 .fankuisum {
   font-size: 20px;
@@ -225,7 +287,13 @@ export default {
     font-size: @fontsize15;
   }
 }
-
+.yes {
+  margin-right: 20px;
+}
+.yes :hover,
+.no :hover {
+  background-color: fade(@mainColor, 0.2);
+}
 // button {
 //   padding: 5px;
 //   border-radius: 5px;

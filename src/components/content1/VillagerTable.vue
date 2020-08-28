@@ -22,9 +22,8 @@
                            width="120">
           </el-table-column>
           <el-table-column prop="phone"
-                           sortable
                            label="联系方式"
-                           width="120">
+                           width="160">
           </el-table-column>
           <el-table-column prop="address"
                            label="地址"

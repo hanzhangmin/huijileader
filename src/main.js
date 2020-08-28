@@ -8,12 +8,16 @@ import echarts from 'echarts'
 
 import hzmMask from './components/commen1/Mask/hzmMask'
 Vue.use(hzmMask)
+
 import Viewer from 'v-viewer'
 import 'viewerjs/dist/viewer.css'
 Vue.use(Viewer, {
     defaultOptions: {
         zIndex: 9999
     }
+})
+Viewer.setDefaults({
+    Options: { 'inline': true, 'button': true, 'navbar': false, 'title': true, 'toolbar': true, 'tooltip': false, 'movable': false, 'zoomable': false, 'rotatable': true, 'scalable': false, 'transition': true, 'fullscreen': true, 'keyboard': true, 'url': 'data-source' }
 })
 
 Vue.prototype.$echarts = echarts

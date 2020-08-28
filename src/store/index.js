@@ -51,7 +51,9 @@ const store = new Vuex.Store({
         id: localStorage.id,
         name: localStorage.name,
         townid: localStorage.townid,
+        fktownid: localStorage.fktownid,
         level: Number(localStorage.level),
+        leaderlevel: Number(localStorage.leaderlevel),
         townname: localStorage.townname,
         areaid: localStorage.areaid,
         areaname: localStorage.areaname,
@@ -64,6 +66,10 @@ const store = new Vuex.Store({
             state.level = Number(level)
             localStorage.level = level
         },
+        set_leaderlevel(state, level) {
+            state.leaderlevel = Number(level)
+            localStorage.leaderlevel = level
+        },
         set_id(state, id) {
             state.id = Number(id)
             localStorage.id = Number(id)
@@ -71,6 +77,10 @@ const store = new Vuex.Store({
         set_townid(state, townid) {
             state.townid = Number(townid)
             localStorage.townid = Number(townid)
+        },
+        set_fktownid(state, fktownid) {
+            state.fktownid = Number(fktownid)
+            localStorage.fktownid = Number(fktownid)
         },
         set_townname(state, townname) {
             state.townname = townname

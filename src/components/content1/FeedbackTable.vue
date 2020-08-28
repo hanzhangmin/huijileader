@@ -34,6 +34,11 @@
                            label="处理人"
                            width="120">
           </el-table-column>
+          <!-- villagename -->
+          <el-table-column prop="villagename"
+                           label="所属村"
+                           width="120">
+          </el-table-column>
           <el-table-column prop="status"
                            label="状态"
                            width="120">
@@ -80,14 +85,28 @@
             <div slot="body">
               <div class="cardcontent">
                 意见建议人： <span>{{itemdata.name}}</span>
+                <!-- villagename -->
+              </div>
+              <div class="cardcontent">
+                所属村： <span>{{itemdata.villagename}}</span>
+                <!-- villagename -->
               </div>
               <div class="cardcontent">
                 意见建议内容:
                 <span>{{itemdata.content}}</span>
-                <el-image v-for="url in itemdata.img"
-                          :key="url"
-                          :src="url"
-                          lazy></el-image>
+              </div>
+              <div class="cardcontent">
+                相关图片：
+                <viewer v-if="itemdata.img.length>0"
+                        :images="itemdata.img">
+                  <div class="img"
+                       v-for="(src,index) in itemdata.img"
+                       :key="index">
+                    <img :src="src"
+                         :onerror="errorImg">
+                  </div>
+                </viewer>
+                <span v-else>无</span>
               </div>
               <div class="cardcontent">
                 意见建议处理行政级别： <span>{{itemdata.status}}</span>
@@ -134,7 +153,9 @@ export default {
       total: 0,
       pageCount: 1,
       tableData: [],
-      itemdata: {},
+      itemdata: {
+        img: []
+      },
       loading: true,
       showcard: false,
       time: "",
@@ -160,7 +181,6 @@ export default {
         }
       }).then(res => {
         let promises = res.map(village => {
-
           let s = {
           }
           switch (this.processed) {
@@ -176,13 +196,16 @@ export default {
           if (this.type != "6") {
             s["type"] = this.type
           }
-          s["village.id"] = { "$eq": Number(village.id) }
+          s["village.id"] = { "$eq": Number(village.id) };
+          let end = new Date(this.time[1]);
+          end.setTime(end.getTime() + 3600 * 1000 * 24)
           s["createdAt"] = {
-            "$between": [new Date(this.time[0]).toISOString(), new Date(this.time[1]).toISOString()],
+            "$between": [new Date(this.time[0]).toISOString(), end.toISOString()],
           }
           return get_feedbacks(
             {
-              join: "village,villager",
+              join: "village,villager,handler",
+              sort: "createdAt,DESC",
               s: s
             }
           )
@@ -190,24 +213,25 @@ export default {
         Promise.all(promises)
           .then(res => {
             console.log(res);
-            let arr = []
+            let arr = [];
             res.forEach(element => {
               arr.push(...element)
             });
             console.log(arr);
-            this.total = arr.length
-            this.tableData.splice(0)
+            this.total = arr.length;
+            this.tableData.splice(0);
             this.tableData = arr.map((feedback, index) => {
-              let name = feedback.villager.name
+              let name = feedback.villager.name;
+              let villagename = feedback.village.name;
               if (feedback.anonymous === true) {
-                name: "匿名"
+                name = "匿名";
               }
-              let img
+              let img = [];
               try {
                 if (feedback.relatedDocuments != null) {
-                  img = feedback.relatedDocuments.map(file => {
-                    return file.url
-                  })
+                  feedback.relatedDocuments.forEach(element => {
+                    img.push(element.url)
+                  });
                 }
               } catch (error) {
                 // console.log(error);
@@ -227,7 +251,7 @@ export default {
                   status = "--"
                   break;
               }
-              let handler = "处理中..."
+              let handler = "--";
               if (feedback.handler != null) {
                 handler = isnull(feedback.handler.name)
               }
@@ -243,7 +267,8 @@ export default {
                 handlRes: isnull(feedback.handlRes),
                 upMessage: isnull(feedback.upMessage),//向上级反馈附带信息
                 downMessage: isnull(feedback.downMessage),//退回反馈附带信息
-                img: img
+                img: img,
+                villagename: villagename
               }
             })
             this.loading = false
@@ -273,13 +298,19 @@ export default {
       if (this.villageid != "0") {
         s["village.id"] = { "$eq": Number(this.villageid) }
       }
+      let end = new Date(this.time[1]);
+      end.setTime(end.getTime() + 3600 * 1000 * 24)
       s["createdAt"] = {
-        "$between": [new Date(this.time[0]).toISOString(), new Date(this.time[1]).toISOString()],
+        "$between": [new Date(this.time[0]).toISOString(), end.toISOString()],
       }
+      // s["createdAt"] = {
+      //   "$between": [new Date(this.time[0]).toISOString(), new Date(this.time[1]).toISOString()],
+      // }
       get_feedbacks({
         limit: this.pageSize,
         page: this.currentPage,
         join: "village,villager,handler",
+        sort: "createdAt,DESC",
         s: s
       })
         .then(res => {
@@ -289,7 +320,8 @@ export default {
           this.total = res.total
           this.tableData.splice(0)
           this.tableData = res.data.map((feedback, index) => {
-            let name = feedback.villager.name
+            let name = feedback.villager.name;
+            let villagename = feedback.village.name;
             if (feedback.anonymous === true) {
               name: "匿名"
             }
@@ -318,7 +350,7 @@ export default {
                 status = "--"
                 break;
             }
-            let handler = "处理中..."
+            let handler = "--";
             if (feedback.handler != null) {
               handler = isnull(feedback.handler.name)
             }
@@ -334,7 +366,8 @@ export default {
               handlRes: isnull(feedback.handlRes),
               upMessage: isnull(feedback.upMessage),//向上级反馈附带信息
               downMessage: isnull(feedback.downMessage),//退回反馈附带信息
-              img: img
+              img: img,
+              villagename
             }
           })
         })
@@ -343,6 +376,7 @@ export default {
       this.time = time;
       this.type = type;
       this.townid = townid;
+      console.log(this.townid);
       this.processed = processed;
       this.villageid = villageid;
       console.log(villageid);
@@ -384,7 +418,7 @@ export default {
     $route (to) {
       if (to.query) {
         if (to.query.townid) {
-          this.showpageselect = false
+          this.showpageselect = false;
         }
       }
     }
